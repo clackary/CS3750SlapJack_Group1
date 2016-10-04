@@ -50,7 +50,7 @@ public class Board extends JFrame
 		player1 = new Player(this);
 		player2 = new Player(this);
 		
-		player1.setBackground(Color.BLUE);//temporary
+		player1.setBackground(Color.PINK);//temporary
 		player2.setBackground(Color.CYAN);//temporary
 	}
 
