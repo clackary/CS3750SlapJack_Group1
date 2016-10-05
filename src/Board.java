@@ -1,14 +1,18 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class Board extends JFrame
+public class Board extends JPanel
 {
 	Deck deck;
 	JPanel board;
@@ -19,24 +23,14 @@ public class Board extends JFrame
 	Card testCard1, testCard2, testCard3;
 	
 	public Board(){
-		deck = new Deck();
-		deck.shuffle();
-		
-		centerPile = new ArrayList<>();
-		
-		createBoard();
-
 		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		//takes up whole screen but leaves room at bottom
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight - (screenHeight / 20))); 
 		this.setVisible(true);
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.add(board);
-		this.pack();//this way the board JPanel shows up
-		
-
-		
+		deck = new Deck();
+		centerPile = new ArrayList<>();
+		createBoard();
 		createPlayers();
 		
 		centerPanel = new JPanel();
@@ -47,8 +41,7 @@ public class Board extends JFrame
 		board.add(centerPanel);
 		board.add(player2);
 		
-		int xPos = (int)((this.getWidth() * .25) - Card.CARD_WI) / 2;
-		int yPos = (int)((this.getHeight() * .7) - Card.CARD_HI) / 2;
+	
 		
 		dealCardsToPlayers();  //initial splitting of 52 cards, 26 to each player at beginning of game.  
 								//deck is empty after this.
@@ -59,7 +52,10 @@ public class Board extends JFrame
 		testCard1 = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
 		testCard2 = new Card(Card.Suit.CLUBS, Card.Value.JACK);
 		testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
-		
+
+		int xPos = (int)((this.getWidth() * .25) - Card.CARD_WI) / 2;
+		int yPos = (int)((this.getHeight() * .7) - Card.CARD_HI) / 2;
+
 		testCard1.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		testCard1.setRotation(.2);
 		testCard2.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
@@ -71,15 +67,13 @@ public class Board extends JFrame
 		centerPanel.add(testCard1);
 		centerPanel.add(testCard3);
 		
+
 		testCard2.repaint();
 		
-		this.pack();  //this SEEMS necessary again here, otherwise everything renders 
-						//some times and not other times.
+
 	
 	}
-
-
-
+	
 	private void dealCardsToPlayers() {
 		ArrayList<Card> dealtCards = new ArrayList<>();
 		dealtCards.addAll(deck.getCards(26));
@@ -87,8 +81,7 @@ public class Board extends JFrame
 		dealtCards.clear();
 		dealtCards.addAll(deck.getCards(26));
 		player2.addCardsToHand(dealtCards);
-	}
-	
+}
 	
 
 	public boolean isTopCardJack(){
@@ -100,6 +93,7 @@ public class Board extends JFrame
 		player2 = new Player(this, 2);
 		
 	}
+	
 
 	private void createBoard() {
 		board = new JPanel();
@@ -109,9 +103,4 @@ public class Board extends JFrame
 		 * and a Player 2 panel on the right.*/
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
 	}
-	
-    public static void main (String[] args)
-    {
-    	new Board();
-    }
 }
