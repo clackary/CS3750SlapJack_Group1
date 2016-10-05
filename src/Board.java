@@ -30,7 +30,7 @@ public class Board extends JPanel
 		this.setVisible(true);
 		deck = new Deck();
 		centerPile = new ArrayList<>();
-		createBoard();
+		//createBoard();
 		createPlayers();
 		
 		centerPanel = new JPanel();
@@ -95,12 +95,12 @@ public class Board extends JPanel
 	}
 	
 
-	private void createBoard() {
+	/*private void createBoard() {
 		board = new JPanel();
 		board.setBackground(Color.DARK_GRAY); //temporary, unless we like it		
-		/* horizontally-oriented  BoxLayout so there will be a 
+		 horizontally-oriented  BoxLayout so there will be a 
 		 * Player 1 panel on the left, a Center panel,
-		 * and a Player 2 panel on the right.*/
+		 * and a Player 2 panel on the right.
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-	}
+	}*/
 }
