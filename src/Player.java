@@ -16,35 +16,46 @@ public class Player extends JPanel
 	Queue<Card> hand;
 	JPanel handPanel, controlPanel;
 	JButton btn_playTopCard, btn_slap;
-	Card testCard;
+	Card[] testBacks;
+	int playerID;
 	
-	public Player(Board board){
+	public Player(Board board, int id){
 		theBoard = board;
+		playerID = id;
 		hand = new Queue<>();
 		
+		
+		
+		this.setOpaque(false);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		btn_playTopCard = new JButton("Play Top Card");
 		btn_slap = new JButton("Slap");
 		
-		testCard = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
-		//testCard = new Card();
-		testCard.setBounds(10, 10, Card.CARD_WI, Card.CARD_HI);
 		
+				
 		createHandPanel();		
 		createControlPanel();
 		
-		handPanel.add(testCard);
+		int xPos = (int)((theBoard.getWidth() * .25) - Card.CARD_WI) / 2;
+		int yPos = (int)((theBoard.getHeight() * .7) - Card.CARD_HI) / 2;
+		
+		double radians = playerID==1 ? .08 : -.16;
+		testBacks = new Card[6];
+		for (int i=0; i < 6; i++){
+			testBacks[i] = new Card();
+			testBacks[i].setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
+			testBacks[i].setRotation(radians);
+			handPanel.add(testBacks[i]);
+			radians+=(.02);
+		}
+		
+		
+		
 		
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
-		
-		/*JPanel testPanel = new JPanel();
-		testPanel.setBackground(Color.RED);
-		testPanel.setBounds(10, 10, 20, 40);
-		handPanel.add(testPanel);*/
 
-	
 		
 		this.add(handPanel);
 		this.add(controlPanel);
@@ -53,10 +64,8 @@ public class Player extends JPanel
 	
 	
 	private void createControlPanel() {
-		controlPanel = new JPanel();
-		//controlPanel.setLayout(new FlowLayout());
-		controlPanel.setOpaque(true);
-		controlPanel.setBackground(Color.GREEN);//temp
+		controlPanel = new JPanel();	
+		controlPanel.setOpaque(false);
 		controlPanel.setPreferredSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .3)));
 		controlPanel.setMinimumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .3)));
 		controlPanel.setMaximumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .3)));
@@ -66,8 +75,8 @@ public class Player extends JPanel
 	private void createHandPanel() {
 		handPanel = new JPanel();
 		handPanel.setLayout(null);//so that Card objects can be positioned
-		handPanel.setBackground(Color.BLUE);//temp
-		handPanel.setOpaque(true);
+		//handPanel.setBackground(Color.DARK_GRAY);////a dark background might help the card outline not look so rough
+		handPanel.setOpaque(false);
 		handPanel.setPreferredSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
 		handPanel.setMinimumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
 		handPanel.setMaximumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
