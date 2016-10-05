@@ -16,7 +16,7 @@ public class Card extends JPanel{ //Variables
     private final Value num;
     private final Toolkit tools  = Toolkit.getDefaultToolkit();
     private Image img;
-    //private String urlString;
+    private String urlString;
     private URL url;
     private double rotationRadians;
     
@@ -25,10 +25,9 @@ public class Card extends JPanel{ //Variables
     
     //Constructor 
     public Card(Suit suit, Value num){
-    	
         this.suit = suit; 
         this.num = num;
-		String urlString = num.getValueName() + suit.getSuitName() + ".png";
+		urlString = num.getValueName() + suit.getSuitName() + ".png";
         url = Card.class.getResource(urlString);
         //System.out.println("Card constructor");
         setOpaque(false);  //the Card itself is larger than the image.  It needs to be set opaque(false) so it's see-through around the image.
@@ -40,8 +39,18 @@ public class Card extends JPanel{ //Variables
         this.suit = null;
         this.num = null;
         setOpaque(false);
-        String urlString = "back2.jpg";
+        urlString = "back2.jpg";
         url = Card.class.getResource(urlString);
+    }
+    
+    public void setFaceUp(boolean faceUp){
+    	if (faceUp){
+    		urlString = num.getValueName() + suit.getSuitName() + ".png";
+    	}else{
+    		urlString = "back2.jpg";
+    	}
+    	url = Card.class.getResource(urlString);
+    	this.repaint();
     }
     
     @Override

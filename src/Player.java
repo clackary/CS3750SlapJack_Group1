@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 
 import sun.misc.Queue;
 
@@ -24,15 +25,11 @@ public class Player extends JPanel
 		playerID = id;
 		hand = new Queue<>();
 		
-		
-		
 		this.setOpaque(false);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		btn_playTopCard = new JButton("Play Top Card");
 		btn_slap = new JButton("Slap");
-		
-		
 				
 		createHandPanel();		
 		createControlPanel();
@@ -50,9 +47,6 @@ public class Player extends JPanel
 			radians+=(playerID==1 ? -.012 : .015);
 		}
 		
-		
-		
-		
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
 
@@ -61,6 +55,12 @@ public class Player extends JPanel
 		this.add(controlPanel);
 	}
 
+	
+	public void addCardsToHand(ArrayList<Card> cardsToAdd){
+		for (Card c : cardsToAdd){
+			hand.enqueue(c);
+		}
+	}
 	
 	
 	private void createControlPanel() {
