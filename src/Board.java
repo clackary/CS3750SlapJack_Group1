@@ -20,6 +20,8 @@ public class Board extends JFrame
 	
 	public Board(){
 		deck = new Deck();
+		deck.shuffle();
+		
 		centerPile = new ArrayList<>();
 		
 		createBoard();
@@ -45,12 +47,21 @@ public class Board extends JFrame
 		board.add(centerPanel);
 		board.add(player2);
 		
+		int xPos = (int)((this.getWidth() * .25) - Card.CARD_WI) / 2;
+		int yPos = (int)((this.getHeight() * .7) - Card.CARD_HI) / 2;
+		
+		dealCardsToPlayers();  //initial splitting of 52 cards, 26 to each player at beginning of game.  
+								//deck is empty after this.
+
+		player1.addHandToBoard();
+		player2.addHandToBoard();
+		
+		
 		testCard1 = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
 		testCard2 = new Card(Card.Suit.CLUBS, Card.Value.JACK);
 		testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
 		
-		int xPos = (int)((this.getWidth() * .25) - Card.CARD_WI) / 2;
-		int yPos = (int)((this.getHeight() * .7) - Card.CARD_HI) / 2;
+		
 		
 		testCard1.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		testCard1.setRotation(.2);
@@ -66,6 +77,17 @@ public class Board extends JFrame
 		this.pack();  //this SEEMS necessary again here, otherwise everything renders 
 						//some times and not other times.
 	
+	}
+
+
+
+	private void dealCardsToPlayers() {
+		ArrayList<Card> dealtCards = new ArrayList<>();
+		dealtCards.addAll(deck.getCards(26));
+		player1.addCardsToHand(dealtCards);
+		dealtCards.clear();
+		dealtCards.addAll(deck.getCards(26));
+		player2.addCardsToHand(dealtCards);
 	}
 	
 	

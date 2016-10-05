@@ -37,7 +37,7 @@ public class Player extends JPanel
 		int xPos = (int)((theBoard.getWidth() * .25) - Card.CARD_WI) / 2;
 		int yPos = (int)((theBoard.getHeight() * .7) - Card.CARD_HI) / 2;
 		
-		double radians = playerID==1 ? .07 : -.12;
+		/*double radians = playerID==1 ? .07 : -.12;
 		testBacks = new Card[12];
 		for (int i=0; i < 12; i++){
 			testBacks[i] = new Card();
@@ -45,7 +45,9 @@ public class Player extends JPanel
 			testBacks[i].setRotation(radians);
 			handPanel.add(testBacks[i]);
 			radians+=(playerID==1 ? -.012 : .015);
-		}
+		}*/
+		
+		
 		
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
@@ -55,6 +57,20 @@ public class Player extends JPanel
 		this.add(controlPanel);
 	}
 
+	
+	public void addHandToBoard(){
+		int xPos = (int)((theBoard.getWidth() * .25) - Card.CARD_WI) / 2;
+		int yPos = (int)((theBoard.getHeight() * .7) - Card.CARD_HI) / 2;
+		
+		double radians = playerID==1 ? .07 : -.12; //so the hands aren't identically messy
+		for (Card c : hand){
+			c.setFaceUp(false);
+			c.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
+			c.setRotation(radians);
+			handPanel.add(c);
+			radians+=(playerID==1 ? -.012 : .015);
+		}
+	}
 	
 	public void addCardsToHand(ArrayList<Card> cardsToAdd){
 		for (Card c : cardsToAdd){
