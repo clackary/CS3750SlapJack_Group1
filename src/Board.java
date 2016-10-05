@@ -20,7 +20,7 @@ public class Board extends JFrame
 	
 	public Board(){
 		deck = new Deck();
-		centerPile = new ArrayList<>();
+		centerPile = new ArrayList<Card>();
 		
 		createBoard();
 
@@ -69,8 +69,11 @@ public class Board extends JFrame
 	}
 	
 	
-
+	
 	public boolean isTopCardJack(){
+        if (centerPile.get(0).getValueName().equals(Card.Value.JACK)) {
+            //Top card is jack
+        }
 		return false;
 	}
 	
