@@ -58,16 +58,16 @@ public class Player extends JPanel
 	public void addHandToBoard(){
 		
 		int xPos = (int) (handPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2) ;
-		int yPos = (int) (handPanel.getPreferredSize().getHeight() /2 - (Card.CARD_HI + 80) / 2) ;
+		int yPos = (int) (handPanel.getPreferredSize().getHeight() /2 - (Card.CARD_HI + 60) / 2) ;
 		
 		
 		double radians = playerID==1 ? .07 : -.12; //so the hands aren't identically messy
 		for (Card c : hand){
 			c.setFaceUp(false);
 			c.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI + 60);
-			c.setRotation(radians);
+			c.setRotation(radians*.45);
 			handPanel.add(c);
-			radians+=(playerID==1 ? -.012 : .015);
+			radians+=(playerID==2 ? -.012 : .015);
 		}
 	}
 	
@@ -81,9 +81,9 @@ public class Player extends JPanel
 	private void createControlPanel() {
 		controlPanel = new JPanel();	
 		controlPanel.setOpaque(false);
-		controlPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .3)));
-		controlPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .3)));
-		controlPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .3)));
+		controlPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .25)));
+		controlPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .25)));
+		controlPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .25)));
 		
 	}
 
@@ -91,8 +91,8 @@ public class Player extends JPanel
 		handPanel = new JPanel();
 		handPanel.setOpaque(false);
 		handPanel.setLayout(null);//so that Card objects can be positioned
-		handPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
-		handPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
-		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
+		handPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
+		handPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
+		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
 	}
 }

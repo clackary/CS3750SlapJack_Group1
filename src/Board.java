@@ -59,7 +59,7 @@ public class Board extends JPanel
 		testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
 
 		int xPos = (int) (centerPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2);
-		int yPos = 20 ;
+		int yPos = 40 ;
 
 		testCard1.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		testCard1.setRotation(.2);
@@ -107,22 +107,3 @@ public class Board extends JPanel
 	}
 }
 
-/*testCard1 = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
-testCard2 = new Card(Card.Suit.CLUBS, Card.Value.JACK);
-testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
-
-int xPos = (int)((this.getWidth() * .25) - Card.CARD_WI) / 2;
-int yPos = (int)((this.getHeight() * .7) - Card.CARD_HI) / 2;
-
-testCard1.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
-testCard1.setRotation(.2);
-testCard2.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
-testCard2.setRotation(0);
-testCard3.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
-testCard3.setRotation(-.15);
-
-centerPanel.add(testCard2);
-centerPanel.add(testCard1);
-centerPanel.add(testCard3);
-
-testCard2.repaint();*/
