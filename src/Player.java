@@ -12,6 +12,7 @@ import sun.misc.Queue;
 
 public class Player extends JPanel
 {
+	Board theBoard;
 	Queue<Card> hand;
 	JPanel handPanel, controlPanel;
 	JButton btn_playTopCard, btn_slap;

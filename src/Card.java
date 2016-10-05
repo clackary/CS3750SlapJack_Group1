@@ -22,7 +22,7 @@ public class Card extends JPanel{ //Variables
         this.num = num;
         int w = (tools.getScreenSize().width/6)-80;//card width
         int h = (int) (w*1.45);
-        String urlString = "/images/" + num.getValueName() + suit.getSuitName() + ".png";
+        String urlString = "images/" + num.getValueName() + suit.getSuitName() + ".png";
         /*if(num.getValue() > 10 || num.getValue() == 1){
             urlString = "images/"+num.getValueName()+suit.getSuitName()+".png";
         } else{
@@ -30,11 +30,14 @@ public class Card extends JPanel{ //Variables
             System.out.println(urlString);
         }*/
         URL url = getClass().getResource(urlString);
+        System.out.println(getClass().getResource("images/FourDiamonds.png"));
         System.out.println(url.toString());
         img = new ImageIcon(url).getImage().getScaledInstance(50, -1, Image.SCALE_SMOOTH);
         Dimension prefSize = new Dimension(CARD_WI, CARD_HI);
         this.setPreferredSize(prefSize);
     }
+    ///CS3750SlapJack_Group1/src/images/EightDiamonds.png
+    
     // Default for adding blanks.
     public Card(){
         this.suit = null;
