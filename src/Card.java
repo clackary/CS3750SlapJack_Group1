@@ -3,11 +3,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -16,6 +12,7 @@ public class Card extends JPanel{ //Variables
     private final Value num;
     private final Toolkit tools  = Toolkit.getDefaultToolkit();
     private Image img;
+    
     
     public static final int CARD_WI = 150;
 	public static final int CARD_HI = (int) (CARD_WI * 1.452); // Keep aspect ratio of card
@@ -29,18 +26,9 @@ public class Card extends JPanel{ //Variables
         String urlString = "images/" + num.getValueName() + suit.getSuitName() + ".png";
         
         URL url = getClass().getResource(urlString);
-        String url_ToString = url.toString().substring(6, url.toString().length());
-        //System.out.println(getClass().getResource("images/FourDiamonds.png"));
-        System.out.println(url.toString().substring(6, url.toString().length()));
-        //img = new ImageIcon(url).getImage().getScaledInstance(CARD_WI, CARD_HI, Image.SCALE_SMOOTH);
-        try
-		{
-			img = ImageIO.read(new File(url_ToString));
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        System.out.println("getClass().getResource(): " + getClass().getResource("/images/FourDiamonds.png"));
+        //System.out.println(url.toString());
+        img = new ImageIcon(url).getImage().getScaledInstance(CARD_WI, CARD_HI, Image.SCALE_SMOOTH);
         Dimension prefSize = new Dimension(CARD_WI, CARD_HI);
         this.setPreferredSize(prefSize);
         this.setMaximumSize(prefSize);
