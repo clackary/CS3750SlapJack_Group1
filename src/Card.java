@@ -12,7 +12,8 @@ public class Card extends JPanel{ //Variables
     private final Value num;
     private final Toolkit tools  = Toolkit.getDefaultToolkit();
     private Image img;
-    
+    private String urlString;
+    private URL url;
     
     public static final int CARD_WI = 150;
 	public static final int CARD_HI = (int) (CARD_WI * 1.452); // Keep aspect ratio of card
@@ -21,17 +22,15 @@ public class Card extends JPanel{ //Variables
     public Card(Suit suit, Value num){
         this.suit = suit; 
         this.num = num;
-        int w = (tools.getScreenSize().width/6)-80;//card width
-        int h = (int) (w*1.45);
-        String urlString = "images/" + num.getValueName() + suit.getSuitName() + ".png";
         
-        URL url = getClass().getResource(urlString);
-        System.out.println("getClass().getResource(): " + getClass().getResource("/images/FourDiamonds.png"));
+        urlString = num.getValueName() + suit.getSuitName() + ".png";
+        url = Card.class.getResource(urlString);
+        //System.out.println("getClass().getResource(): " + getClass().getResource("/FourDiamonds.png"));
         //System.out.println(url.toString());
-        img = new ImageIcon(url).getImage().getScaledInstance(CARD_WI, CARD_HI, Image.SCALE_SMOOTH);
-        Dimension prefSize = new Dimension(CARD_WI, CARD_HI);
-        this.setPreferredSize(prefSize);
-        this.setMaximumSize(prefSize);
+        //img = new ImageIcon(url).getImage().getScaledInstance(CARD_WI, CARD_HI, Image.SCALE_SMOOTH);
+        //Dimension prefSize = new Dimension(CARD_WI, CARD_HI);
+        //this.setPreferredSize(prefSize);
+        //this.setMaximumSize(prefSize);
     }
     ///CS3750SlapJack_Group1/src/images/EightDiamonds.png
     
@@ -45,7 +44,7 @@ public class Card extends JPanel{ //Variables
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(img, 0, 0, null);
+        //g.drawImage(img, 0, 0, null);
     }
     
     public Image getImage(){
@@ -85,7 +84,9 @@ public class Card extends JPanel{ //Variables
     public int getSuitNum(){ return suitNum; }
     public String getSuitName(){ return suitName; }
     }
-    enum Value { TWO("Two", 2), THREE("Three", 3), FOUR("Four", 4), 
+    
+ 
+ enum Value { TWO("Two", 2), THREE("Three", 3), FOUR("Four", 4), 
         FIVE("Five", 5), SIX("Six", 6), SEVEN("Seven", 7), EIGHT("Eight", 8), 
         NINE("Nine", 9), TEN("Ten", 10), JACK("Jack", 11), QUEEN("Queen", 12), 
         KING("King", 13), ACE("Ace", 1);
