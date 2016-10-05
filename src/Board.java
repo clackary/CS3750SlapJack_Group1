@@ -93,6 +93,11 @@ public class Board extends JFrame
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
 	}
 	
+	//Deals cards to players
+	public void deal() {
+	 
+	}
+	
     public static void main (String[] args)
     {
     	new Board();
