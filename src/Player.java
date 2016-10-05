@@ -14,7 +14,7 @@ import sun.misc.Queue;
 public class Player extends JPanel
 {
 	Board theBoard;
-	Queue<Card> hand;
+	ArrayList<Card> hand;
 	JPanel handPanel, controlPanel;
 	JButton btn_playTopCard, btn_slap;
 	Card[] testBacks;
@@ -23,7 +23,7 @@ public class Player extends JPanel
 	public Player(Board board, int id){
 		theBoard = board;
 		playerID = id;
-		hand = new Queue<>();
+		hand = new ArrayList<Card>();
 		
 		this.setOpaque(false);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -58,7 +58,7 @@ public class Player extends JPanel
 	
 	public void addCardsToHand(ArrayList<Card> cardsToAdd){
 		for (Card c : cardsToAdd){
-			hand.enqueue(c);
+			hand.add(c);
 		}
 	}
 	
