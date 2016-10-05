@@ -32,6 +32,8 @@ public class Board extends JFrame
 		this.add(board);
 		this.pack();//this way the board JPanel shows up
 		
+
+		
 		createPlayers();
 		
 		centerPanel = new JPanel();
@@ -40,7 +42,12 @@ public class Board extends JFrame
 		board.add(player1);
 		board.add(centerPanel);
 		board.add(player2);
+		
+		
+	
 	}
+	
+	
 
 	public boolean isTopCardJack(){
 		return false;
@@ -56,7 +63,7 @@ public class Board extends JFrame
 
 	private void createBoard() {
 		board = new JPanel();
-		board.setBackground(Color.GREEN); //temporary, just for setting up layout
+		board.setBackground(Color.BLACK); //temporary, just for setting up layout
 		
 		/* horizontally-oriented  BoxLayout so there will be a 
 		 * Player 1 panel on the left, a Center panel,

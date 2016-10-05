@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,29 +13,33 @@ public class Card extends JPanel{ //Variables
     private final Toolkit tools  = Toolkit.getDefaultToolkit();
     private Image img;
     
+    public static final int CARD_WI = 150;
+	public static final int CARD_HI = (int) (CARD_WI * 1.452); // Keep aspect ratio of card
+    
     //Constructor 
     public Card(Suit suit, Value num){
         this.suit = suit; 
         this.num = num;
         int w = (tools.getScreenSize().width/6)-80;//card width
         int h = (int) (w*1.45);
-        String urlString;
-        if(num.getValue() > 10 || num.getValue() == 1){
+        String urlString = "/images/" + num.getValueName() + suit.getSuitName() + ".png";
+        /*if(num.getValue() > 10 || num.getValue() == 1){
             urlString = "images/"+num.getValueName()+suit.getSuitName()+".png";
         } else{
-            urlString = "images/"+num.getValue()+suit.getSuitName()+".png";
-        }
-        URL url;
-        url =  Card.class.getResource(urlString);
-        img = new ImageIcon(url).getImage().getScaledInstance(w, -1, Image.SCALE_SMOOTH);
-        Dimension prefSize = new Dimension(w, h);
+            urlString = "images/"+num.getValueName()+suit.getSuitName()+".png";
+            System.out.println(urlString);
+        }*/
+        URL url = getClass().getResource(urlString);
+        System.out.println(url.toString());
+        img = new ImageIcon(url).getImage().getScaledInstance(50, -1, Image.SCALE_SMOOTH);
+        Dimension prefSize = new Dimension(CARD_WI, CARD_HI);
         this.setPreferredSize(prefSize);
     }
-    
     // Default for adding blanks.
     public Card(){
         this.suit = null;
         this.num = null;
+        this.setBackground(Color.RED);
     }
     
     @Override
