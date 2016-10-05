@@ -3,7 +3,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -23,18 +27,23 @@ public class Card extends JPanel{ //Variables
         int w = (tools.getScreenSize().width/6)-80;//card width
         int h = (int) (w*1.45);
         String urlString = "images/" + num.getValueName() + suit.getSuitName() + ".png";
-        /*if(num.getValue() > 10 || num.getValue() == 1){
-            urlString = "images/"+num.getValueName()+suit.getSuitName()+".png";
-        } else{
-            urlString = "images/"+num.getValueName()+suit.getSuitName()+".png";
-            System.out.println(urlString);
-        }*/
+        
         URL url = getClass().getResource(urlString);
-        System.out.println(getClass().getResource("images/FourDiamonds.png"));
-        System.out.println(url.toString());
-        img = new ImageIcon(url).getImage().getScaledInstance(50, -1, Image.SCALE_SMOOTH);
+        String url_ToString = url.toString().substring(6, url.toString().length());
+        //System.out.println(getClass().getResource("images/FourDiamonds.png"));
+        System.out.println(url.toString().substring(6, url.toString().length()));
+        //img = new ImageIcon(url).getImage().getScaledInstance(CARD_WI, CARD_HI, Image.SCALE_SMOOTH);
+        try
+		{
+			img = ImageIO.read(new File(url_ToString));
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         Dimension prefSize = new Dimension(CARD_WI, CARD_HI);
         this.setPreferredSize(prefSize);
+        this.setMaximumSize(prefSize);
     }
     ///CS3750SlapJack_Group1/src/images/EightDiamonds.png
     
