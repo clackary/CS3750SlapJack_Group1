@@ -98,7 +98,7 @@ public class Board extends JPanel
 	
 
 	private void configureBoard() {
-		this.setBackground(Color.DARK_GRAY); //temporary, unless we like it		
+		this.setBackground(new Color(6, 10, 25)); //temporary, unless we like it		
 		 									//	horizontally-oriented  BoxLayout so there will be a 
 		 									//* Player 1 panel on the left, a Center panel,
 											//* and a Player 2 panel on the right.
