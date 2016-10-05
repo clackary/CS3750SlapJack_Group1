@@ -78,7 +78,6 @@ public class Player extends JPanel
             //Jack was not slapped, add pile to opponent's hand.
         }
         
-        
         return;
     }
     
