@@ -56,12 +56,9 @@ public class Board extends JFrame
 		player1.addHandToBoard();
 		player2.addHandToBoard();
 		
-		
 		testCard1 = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
 		testCard2 = new Card(Card.Suit.CLUBS, Card.Value.JACK);
 		testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
-		
-		
 		
 		testCard1.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		testCard1.setRotation(.2);
@@ -73,6 +70,8 @@ public class Board extends JFrame
 		centerPanel.add(testCard2);
 		centerPanel.add(testCard1);
 		centerPanel.add(testCard3);
+		
+		testCard2.repaint();
 		
 		this.pack();  //this SEEMS necessary again here, otherwise everything renders 
 						//some times and not other times.
