@@ -35,15 +35,11 @@ public class Board extends JPanel
 		createPlayers();
 		
 		centerPanel = new JPanel();
-		centerPanel.setOpaque(true);
-		centerPanel.setBackground(Color.RED);
+		centerPanel.setOpaque(false);
 		centerPanel.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
 		centerPanel.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
 		centerPanel.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
 		centerPanel.setLayout(null);
-		
-		JPanel jp1 = new JPanel();
-		jp1.setBackground(Color.WHITE);
 		
 		this.add(player1);
 		this.add(centerPanel);
@@ -62,8 +58,8 @@ public class Board extends JPanel
 		testCard2 = new Card(Card.Suit.CLUBS, Card.Value.JACK);
 		testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
 
-		int xPos = (int) centerPanel.getBounds().getCenterX();
-		int yPos = (int) centerPanel.getBounds().getCenterY();
+		int xPos = (int) (centerPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2);
+		int yPos = 20 ;
 
 		testCard1.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		testCard1.setRotation(.2);
@@ -97,15 +93,7 @@ public class Board extends JPanel
 	
 	private void createPlayers() {
 		player1 = new Player(this, 1);
-		player1.setOpaque(true);
-		player1.setBackground(Color.WHITE);
-		//player1.setMaximumSize(new Dimension(screenWidth, screenHeight));
-		//player1.setMinimumSize(new Dimension(screenWidth, screenHeight));
 		player2 = new Player(this, 2);
-		player2.setOpaque(true);
-		player2.setBackground(Color.WHITE);
-		//player2.setMaximumSize(new Dimension(screenWidth, screenHeight));
-		//player2.setMinimumSize(new Dimension(screenWidth, screenHeight));
 	}
 	
 

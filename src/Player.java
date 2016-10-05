@@ -29,32 +29,19 @@ public class Player extends JPanel
 		playerID = id;
 		hand = new ArrayList<Card>();
 		
+		
 		this.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
 		this.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
 		this.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
+		this.setOpaque(false);
 		btn_playTopCard = new JButton("Play Top Card");
 		btn_slap = new JButton("Slap");
 				
 		createHandPanel();		
 		createControlPanel();
 		
-		int xPos = (int) this.getBounds().getCenterX();
-		int yPos = (int) this.getBounds().getCenterY();
-		//int xPos = (int)((theBoard.getWidth() * .25) - Card.CARD_WI) / 2;
-		//int yPos = (int)((theBoard.getHeight() * .7) - Card.CARD_HI) / 2;
-		
-		/*double radians = playerID==1 ? .07 : -.12;
-		testBacks = new Card[12];
-		for (int i=0; i < 12; i++){
-			testBacks[i] = new Card();
-			testBacks[i].setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
-			testBacks[i].setRotation(radians);
-			handPanel.add(testBacks[i]);
-			radians+=(playerID==1 ? -.012 : .015);
-		}*/
 		
 		
 		
@@ -69,14 +56,15 @@ public class Player extends JPanel
 
 	
 	public void addHandToBoard(){
-		int xPos = (int) this.getBounds().getCenterX();
-		int yPos = (int) this.getBounds().getCenterY();
+		
+		int xPos = (int) (handPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2) ;
+		int yPos = (int) (handPanel.getPreferredSize().getHeight() /2 - (Card.CARD_HI + 80) / 2) ;
 		
 		
 		double radians = playerID==1 ? .07 : -.12; //so the hands aren't identically messy
 		for (Card c : hand){
 			c.setFaceUp(false);
-			c.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
+			c.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI + 60);
 			c.setRotation(radians);
 			handPanel.add(c);
 			radians+=(playerID==1 ? -.012 : .015);
@@ -101,9 +89,8 @@ public class Player extends JPanel
 
 	private void createHandPanel() {
 		handPanel = new JPanel();
+		handPanel.setOpaque(false);
 		handPanel.setLayout(null);//so that Card objects can be positioned
-		handPanel.setBackground(Color.GREEN);////a dark background might help the card outline not look so rough
-		handPanel.setOpaque(true);
 		handPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
 		handPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
 		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
