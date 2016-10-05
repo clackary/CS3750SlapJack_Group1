@@ -40,14 +40,14 @@ public class Player extends JPanel
 		int xPos = (int)((theBoard.getWidth() * .25) - Card.CARD_WI) / 2;
 		int yPos = (int)((theBoard.getHeight() * .7) - Card.CARD_HI) / 2;
 		
-		double radians = playerID==1 ? .08 : -.16;
-		testBacks = new Card[6];
-		for (int i=0; i < 6; i++){
+		double radians = playerID==1 ? .07 : -.12;
+		testBacks = new Card[12];
+		for (int i=0; i < 12; i++){
 			testBacks[i] = new Card();
 			testBacks[i].setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60);
 			testBacks[i].setRotation(radians);
 			handPanel.add(testBacks[i]);
-			radians+=(.02);
+			radians+=(playerID==1 ? -.012 : .015);
 		}
 		
 		

@@ -30,7 +30,7 @@ public class Card extends JPanel{ //Variables
         this.num = num;
 		String urlString = num.getValueName() + suit.getSuitName() + ".png";
         url = Card.class.getResource(urlString);
-        System.out.println("constructor");
+        //System.out.println("Card constructor");
         setOpaque(false);  //the Card itself is larger than the image.  It needs to be set opaque(false) so it's see-through around the image.
         
     }
@@ -49,7 +49,7 @@ public class Card extends JPanel{ //Variables
     	
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-    	System.out.println("paintComponent");
+    	//System.out.println("paintComponent");
     	/*  NOTE: to save anyone's sanity:  the image has to be instantiated HERE, not in the constructor.
     	 *  Trust.
     	 *  Also, if the image comes from getScaledInstance(), it will NOT SHOW UP.
@@ -58,11 +58,7 @@ public class Card extends JPanel{ //Variables
     	img = new ImageIcon(url).getImage();//.getScaledInstance(CARD_WI, -1, Image.SCALE_SMOOTH);
     	g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);  //Not sure...this makes edges a little smoother?
     	
-    	/* rotation could be some sort of method
-    	 * that gets random radians values passed in,
-    	 * so that the card pile can appear messy.
-    	 * Something to think about.
-    	 */
+    	
     	int originX = this.getWidth()/2;
     	int originY = this.getHeight()/2;
     	g2.rotate(rotationRadians, originX, originY);

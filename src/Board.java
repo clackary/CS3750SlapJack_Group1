@@ -62,6 +62,9 @@ public class Board extends JFrame
 		centerPanel.add(testCard2);
 		centerPanel.add(testCard1);
 		centerPanel.add(testCard3);
+		
+		this.pack();  //this SEEMS necessary again here, otherwise everything renders 
+						//some times and not other times.
 	
 	}
 	
