@@ -37,9 +37,9 @@ public class Board extends JPanel
 		centerPanel.setOpaque(false);
 		centerPanel.setLayout(null);
 		
-		board.add(player1);
-		board.add(centerPanel);
-		board.add(player2);
+		this.add(player1);
+		this.add(centerPanel);
+		this.add(player2);
 		
 	
 		
