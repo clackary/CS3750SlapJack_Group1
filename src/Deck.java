@@ -75,6 +75,17 @@ public class Deck {
 		return deck.get(index);
 	}
 	
+	/*  this will be called by Board, 
+	 *  to be passed to a player.	 * 
+	 */
+	public ArrayList<Card> getCards(int numCards){
+		ArrayList<Card> cardsToGet = new ArrayList<>();
+		for (int i=0; i<numCards; i++){
+			cardsToGet.add(deck.remove(i));
+		}
+		return cardsToGet;
+	}
+	
 	public void removeCard()
 	{
 		deck.remove(0);
