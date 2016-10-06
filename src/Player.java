@@ -1,8 +1,5 @@
 
 import java.awt.Graphics2D;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import java.awt.geom.*;
 import java.awt.RadialGradientPaint;
 import java.awt.Color;
@@ -13,7 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import javax.swing.*;
 import sun.misc.Queue;
 
 public class Player extends JPanel
@@ -33,7 +30,6 @@ public class Player extends JPanel
 		playerID = id;
 		hand = new ArrayList<Card>();
 		
-		
 		this.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
 		this.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
 		this.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
@@ -43,6 +39,27 @@ public class Player extends JPanel
 		
 		btn_playTopCard = new JButton("Play Top Card");
 		btn_slap = new JButton("Slap");
+		
+		//Player 1 has A and S keys
+		if (this.playerID == 1) {
+		    btn_playTopCard.getInputMap().put(KeyStroke.getKeyStroke('a'), "playTopCard");
+		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
+		    public void actionPerformed(ActionEvent arg0) {
+		        theBoard.placeCardOnCenterPile(playTopCard());
+		    }
+		});
+		}
+
+		//Player 2 has K and L
+		if (this.playerID == 2) {
+            btn_playTopCard.getInputMap().put(KeyStroke.getKeyStroke('k'), "playTopCard");
+        btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
+            public void actionPerformed(ActionEvent arg0) {
+                theBoard.placeCardOnCenterPile(playTopCard());
+            }
+        });
+        }
+        
 				
 		btn_playTopCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -64,12 +81,9 @@ public class Player extends JPanel
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
 
-		
 		this.add(handPanel);
 		this.add(controlPanel);
-		
 	}
-
 	
 	public void addHandToBoard(){
 		//first clear the cards that are already on the board
@@ -80,7 +94,6 @@ public class Player extends JPanel
 		int xPos = (int) (handPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2) ;
 		int yPos = (int) (handPanel.getPreferredSize().getHeight() /2 - (Card.CARD_HI + 60) / 2) ;
 		
-		
 		double radians = playerID==1 ? .07 : -.12; //so the hands aren't identically messy
 		for (Card c : hand){
 			c.setFaceUp(false);
@@ -90,8 +103,6 @@ public class Player extends JPanel
 			radians+=(playerID==2 ? -.012 : .015);
 		}
 	}
-	
-	
 	
 	public void addCardsToHand(ArrayList<Card> cardsToAdd){
 		for (Card c : cardsToAdd){

@@ -51,8 +51,6 @@ public class Board extends JPanel
 		this.add(centerPanel);
 		this.add(player2);
 		
-		
-		
 		dealCardsToPlayers();  //initial splitting of 52 cards, 26 to each player at beginning of game.  
 								//deck is empty after this.
 
@@ -155,4 +153,3 @@ public class Board extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 	}
 }
-
