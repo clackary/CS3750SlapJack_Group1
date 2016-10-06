@@ -82,8 +82,8 @@ public class Board extends JFrame
 	private void createPlayers() {
 	    //Players array, hard coded to 2 for now.
         players = new Player[2];
-        players[1] = new Player(this,1);
-        players[2] = new Player(this,2);
+        players[0] = new Player(this,1);
+        players[1] = new Player(this,2);
 	    
         
 		player1 = new Player(this, 1);
