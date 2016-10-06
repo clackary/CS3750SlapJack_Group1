@@ -85,6 +85,7 @@ public class Board extends JPanel
 	
 	private void dealCardsToPlayers() {
 		ArrayList<Card> dealtCards = new ArrayList<>();
+		deck.shuffle();
 		dealtCards.addAll(deck.getCards(26));
 		player1.addCardsToHand(dealtCards);
 		dealtCards.clear();
