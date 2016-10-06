@@ -105,30 +105,36 @@ public class Board extends JPanel
 		topCard.setFaceUp(true);
 		centerPanel.setComponentZOrder(topCard, 0);
 		centerPanel.repaint();
-		System.out.println("top card z index: " + centerPanel.getComponentZOrder(topCard));
 	}
 	
 	//can be called by player.  Whichever listener (button, key) can
 	//send player id to this method
 	public void slap(int playerID){
 		Player thePlayer;
+		System.out.println("top card is " + centerPile.get(0).getValueName());
+		System.out.println(Card.Value.JACK);
 		
-		if (isTopCardJack()){
-			thePlayer = (playerID == 1 ? player1 : player2);
-		}else{
-			thePlayer = (playerID == 1 ? player2 : player1);
+		if (!centerPile.isEmpty())//nothing happens if the center pile is empty
+		{
+			if (isTopCardJack())
+			{
+				thePlayer = (playerID == 1 ? player1 : player2);
+			} else
+			{
+				thePlayer = (playerID == 1 ? player2 : player1);
+			}
+			Collections.shuffle(centerPile);
+			thePlayer.addCardsToHand(centerPile);
+			centerPile.clear();
+			centerPanel.repaint();
+			thePlayer.addHandToBoard();
 		}
-		Collections.shuffle(centerPile);
-		thePlayer.addCardsToHand(centerPile);	
-		centerPile.clear();
-		centerPanel.repaint();
-		thePlayer.addHandToBoard();
 	}
 
 
 	
 	public boolean isTopCardJack(){
-        if (centerPile.get(0).getValueName().equals(Card.Value.JACK)) {
+        if (centerPile.get(0).getValueName().equals("Jack")){//(Card.Value.JACK)) {
             //Top card is jack
             return true;
         }

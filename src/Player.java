@@ -50,6 +50,14 @@ public class Player extends JPanel
 			}
 		});
 		
+		btn_slap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JButton btn = (JButton)e.getSource();
+				Player player = (Player)btn.getParent().getParent();
+				theBoard.slap(player.playerID);
+			}
+		});
+		
 		createHandPanel();		
 		createControlPanel();
 			
@@ -68,6 +76,7 @@ public class Player extends JPanel
 		handPanel.removeAll();
 		handPanel.repaint();//necessary?  don't know
 		
+		// xPos and yPos are for centering the card
 		int xPos = (int) (handPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2) ;
 		int yPos = (int) (handPanel.getPreferredSize().getHeight() /2 - (Card.CARD_HI + 60) / 2) ;
 		
