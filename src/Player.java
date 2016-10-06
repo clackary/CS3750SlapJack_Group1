@@ -41,24 +41,23 @@ public class Player extends JPanel
 		btn_slap = new JButton("Slap");
 		
 		//Player 1 has A and S keys
-		if (this.playerID == 1) {
-		    btn_playTopCard.getInputMap().put(KeyStroke.getKeyStroke('a'), "playTopCard");
+		//Player 2 has K and L keys
+		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+			.put(KeyStroke.getKeyStroke(playerID==1 ? 'a' : 'k'), "playTopCard");
 		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
 		    public void actionPerformed(ActionEvent arg0) {
-		        theBoard.placeCardOnCenterPile(playTopCard());
+		    	if (!hand.isEmpty())
+		    		theBoard.placeCardOnCenterPile(playTopCard());
 		    }
 		});
-		}
-
-		//Player 2 has K and L
-		if (this.playerID == 2) {
-            btn_playTopCard.getInputMap().put(KeyStroke.getKeyStroke('k'), "playTopCard");
-        btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
-            public void actionPerformed(ActionEvent arg0) {
-                theBoard.placeCardOnCenterPile(playTopCard());
-            }
-        });
-        }
+		
+		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(playerID == 1 ? 's' : 'l'), "slap");
+		btn_slap.getActionMap().put("slap", new AbstractAction() {
+			public void actionPerformed(ActionEvent arg0) {
+				theBoard.slap(playerID);
+			}
+		});
         
 				
 		btn_playTopCard.addActionListener(new ActionListener() {
