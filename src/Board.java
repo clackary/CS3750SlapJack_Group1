@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -11,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import java.util.Random;
 
 public class Board extends JPanel
 {
@@ -21,6 +23,8 @@ public class Board extends JPanel
 	Player player1, player2;
 	ArrayList<Card> centerPile;
 	Card testCard1, testCard2, testCard3;
+	Random random;
+	
 	int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	
@@ -31,6 +35,8 @@ public class Board extends JPanel
 		this.setVisible(true);
 		deck = new Deck();
 		centerPile = new ArrayList<>();
+		random = new Random();//for randomizing card rotation
+		
 		configureBoard();
 		createPlayers();
 		
@@ -54,7 +60,7 @@ public class Board extends JPanel
 		player2.addHandToBoard();
 		
 				
-		testCard1 = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
+		/*testCard1 = new Card(Card.Suit.DIAMONDS, Card.Value.FOUR);
 		testCard2 = new Card(Card.Suit.CLUBS, Card.Value.JACK);
 		testCard3 = new Card(Card.Suit.SPADES, Card.Value.ACE);
 
@@ -74,7 +80,7 @@ public class Board extends JPanel
 
 		testCard2.repaint();
 		this.repaint();
-		
+		*/
 	}
 	
 	private void dealCardsToPlayers() {
@@ -84,9 +90,43 @@ public class Board extends JPanel
 		dealtCards.clear();
 		dealtCards.addAll(deck.getCards(26));
 		player2.addCardsToHand(dealtCards);
-}
+	}
 	
+	public void placeCardOnCenterPile(Card card){
+		centerPile.add(0, card);
+		Card topCard = centerPile.get(0);
+		
+		int xPos = (int) (centerPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2);
+		int yPos = 40 ;
 
+		topCard.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
+		topCard.setRotation(random.nextDouble() * .25 * (centerPile.size() % 2 == 0 ? -1.0 : 1.0)); //alternates direction of rotation
+		centerPanel.add(topCard);
+		topCard.setFaceUp(true);
+		centerPanel.setComponentZOrder(topCard, 0);
+		centerPanel.repaint();
+		System.out.println("top card z index: " + centerPanel.getComponentZOrder(topCard));
+	}
+	
+	//can be called by player.  Whichever listener (button, key) can
+	//send player id to this method
+	public void slap(int playerID){
+		Player thePlayer;
+		
+		if (isTopCardJack()){
+			thePlayer = (playerID == 1 ? player1 : player2);
+		}else{
+			thePlayer = (playerID == 1 ? player2 : player1);
+		}
+		Collections.shuffle(centerPile);
+		thePlayer.addCardsToHand(centerPile);	
+		centerPile.clear();
+		centerPanel.repaint();
+		thePlayer.addHandToBoard();
+	}
+
+
+	
 	public boolean isTopCardJack(){
         if (centerPile.get(0).getValueName().equals(Card.Value.JACK)) {
             //Top card is jack

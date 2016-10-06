@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import sun.misc.Queue;
@@ -38,15 +40,19 @@ public class Player extends JPanel
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
+		
 		btn_playTopCard = new JButton("Play Top Card");
 		btn_slap = new JButton("Slap");
 				
+		btn_playTopCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				theBoard.placeCardOnCenterPile(playTopCard());
+			}
+		});
+		
 		createHandPanel();		
 		createControlPanel();
-		
-		
-		
-		
+			
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
 
@@ -58,6 +64,9 @@ public class Player extends JPanel
 
 	
 	public void addHandToBoard(){
+		//first clear the cards that are already on the board
+		handPanel.removeAll();
+		handPanel.repaint();//necessary?  don't know
 		
 		int xPos = (int) (handPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2) ;
 		int yPos = (int) (handPanel.getPreferredSize().getHeight() /2 - (Card.CARD_HI + 60) / 2) ;
@@ -72,6 +81,8 @@ public class Player extends JPanel
 			radians+=(playerID==2 ? -.012 : .015);
 		}
 	}
+	
+	
 	
 	public void addCardsToHand(ArrayList<Card> cardsToAdd){
 		for (Card c : cardsToAdd){
