@@ -112,9 +112,7 @@ public class Board extends JPanel
 	//send player id to this method
 	public void slap(int playerID){
 		Player thePlayer;
-		System.out.println("top card is " + centerPile.get(0).getValueName());
-		System.out.println(Card.Value.JACK);
-		
+				
 		if (!centerPile.isEmpty())//nothing happens if the center pile is empty
 		{
 			if (isTopCardJack())
