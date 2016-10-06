@@ -88,6 +88,10 @@ public class Board extends JPanel
 	
 
 	public boolean isTopCardJack(){
+        if (centerPile.get(0).getValueName().equals(Card.Value.JACK)) {
+            //Top card is jack
+            return true;
+        }
 		return false;
 	}
 	
