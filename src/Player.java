@@ -149,21 +149,6 @@ public class Player extends JPanel
 		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
 	}
 	
-	public void indicatePlayerTurn(){
-		Graphics g = this.getGraphics();
-		Point2D gradient_CenterPoint = new Point2D.Float((float) (this.getPreferredSize().getWidth() / 2), 400 - 100);
-		float radius = 400f;
-		float[] dist = { 0.2f, .8f };  //first float is where first color begins, and then gradually reaches second color at second float
-		Color[] colors = { new Color(255, 255, 255, 40), new Color(255, 255, 255, 0) };
 
-		RadialGradientPaint radialGradientPaint = new RadialGradientPaint(gradient_CenterPoint, radius, dist,
-				colors);
-
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setPaint(radialGradientPaint);
-		g2d.fillArc((this.getWidth() / 2 - 400), -100, 800, 800, 0, 360);//upper left-hand corner, width, height, startArc, endArc
-		g2d.dispose();
-		g.dispose();
-	}
 	
 }
