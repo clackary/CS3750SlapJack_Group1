@@ -77,6 +77,57 @@ public class Player extends JPanel
 		}
 	}
 	
+	public ArrayList<Card> getHand() {
+        return hand;
+    }
+
+    public void setHand(ArrayList<Card> hand) {
+        this.hand = hand;
+    }
+	
+    
+    //When a Jack occurs slap will be called by player and the pile
+    // from the center will be given to the player who slapped first.
+    public void slap(ArrayList<Card> pile)
+    {
+        if (pile.isEmpty()) {
+            System.out.println("Too late! Pile is empty");
+        }
+        
+        if (pile.get(0).getValueName().equals(Card.Value.JACK)) {
+            //Jack is top card of pile, jack was slapped
+            //Player gets pile, add pile to player's hand
+            
+        } else {
+            //Jack was not slapped, add pile to opponent's hand.
+        }
+        
+        return;
+    }
+    
+    //Removes the top card from the hand of player.
+    //and returns it to be placed in the center pile
+    public Card playTopCard()
+    {
+        Card topCard;
+        topCard = hand.get(0);
+        hand.remove(0);
+        return topCard;
+    }
+    
+    //Returns size of the hand
+    public int handSize()
+    {
+        return hand.size();
+    }
+    
+    //When player places a Jack then center pile is added in hand using this function
+    public void addCenterPileToHand(ArrayList<Card> centerPile){
+        for (Card c : centerPile) {
+            hand.add(c);
+        }
+    }
+    
 	
 	private void createControlPanel() {
 		controlPanel = new JPanel();	
