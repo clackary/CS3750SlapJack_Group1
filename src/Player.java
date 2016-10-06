@@ -13,7 +13,7 @@ import sun.misc.Queue;
 public class Player extends JPanel
 {
 	Board theBoard;
-	ArrayList<Card> hand;
+	private ArrayList<Card> hand;
 //    private Queue<Card> hand;
 	JPanel handPanel, controlPanel;
 	JButton btn_playTopCard, btn_slap;
@@ -62,23 +62,34 @@ public class Player extends JPanel
         this.hand = hand;
     }
     
-    //When a Jack occurs slap will be called by player and the pile
-    // from the center will be given to the player who slapped first.
-    public void slap(ArrayList<Card> pile)
+    /** 
+    * When a Jack occurs slap will be called by player and the pile
+    * from the center will be given to the player who slapped first.
+    * 
+    * Returns true and adds cards to player's hand if player is the first
+    * to slap. Returns false if the pile is empty, or if the card that 
+    * was slapped was not a jack.
+    * 
+    * Note: Board is responsible for resetting the pile after slap returns.
+    **/
+    public boolean slap(ArrayList<Card> pile)
     {
-        if (pile.isEmpty()) {
-            System.out.println("Too late! Pile is empty");
-        }
+//        if (pile.isEmpty()) {
+//            System.out.println("Too late! Pile is empty");
+//            return false;
+//        }
         
-        if (pile.get(0).getValueName().equals(Card.Value.JACK)) {
-            //Jack is top card of pile, jack was slapped
+        //Jack is top card of pile, jack was slapped
+        if (!pile.isEmpty() && pile.get(0).getValueName().equals(Card.Value.JACK)) {
             //Player gets pile, add pile to player's hand
-            
+            for (Card c : pile) {
+                hand.add(c);
+            }
+            return true;
         } else {
             //Jack was not slapped, add pile to opponent's hand.
-        }
-        
-        return;
+            return false;
+        }        
     }
     
     //Removes the top card from the hand of player.
@@ -100,13 +111,13 @@ public class Player extends JPanel
     //When player places a Jack then center pile is added in hand using this function
     public void addCenterPileToHand(ArrayList<Card> centerPile){
         for (Card c : centerPile) {
-            hand.add(c);
+            this.hand.add(c);
         }
     }
     
 	public void addCardsToHand(ArrayList<Card> cardsToAdd){
 		for (Card c : cardsToAdd){
-			hand.add(c);
+			this.hand.add(c);
 		}
 	}
 	
@@ -129,4 +140,12 @@ public class Player extends JPanel
 		handPanel.setMinimumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
 		handPanel.setMaximumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
 	}
+
+    /**
+     * Adds a single card to bottom of player's hand.
+     */
+    public void addCardToHand (Card card)
+    {
+        this.hand.add(card);
+    }
 }

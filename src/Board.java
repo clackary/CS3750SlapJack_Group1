@@ -15,7 +15,8 @@ public class Board extends JFrame
 	JPanel centerPanel; //where the center pile will be displayed
 						//probably will contain another panel with null layout, for card pile positioning
 	Player player1, player2;
-	ArrayList<Card> centerPile;
+	private Player[] players;
+	private ArrayList<Card> centerPile;
 	Card testCard1, testCard2, testCard3;
 	
 	public Board(){
@@ -79,6 +80,12 @@ public class Board extends JFrame
 	}
 	
 	private void createPlayers() {
+	    //Players array, hard coded to 2 for now.
+        players = new Player[2];
+        players[1] = new Player(this,1);
+        players[2] = new Player(this,2);
+	    
+        
 		player1 = new Player(this, 1);
 		player2 = new Player(this, 2);
 		
@@ -96,6 +103,34 @@ public class Board extends JFrame
 	//Deals cards to players
 	public void deal() {
 	 
+	}
+	
+	/**
+	 * This method will clear the pile, and ensure that the pile is added
+	 * to the correct player's hand.
+	 * It will likely be called from the buttonListener, after calling slap
+	 */
+	public void resolvePile(Player p) {
+	    if (p.slap(centerPile)) {
+	        System.out.println("Player " + p.playerID + " won pile.");
+	        centerPile.clear();
+	    } else {
+	        if (centerPile.isEmpty()) {
+	            System.out.println("Too late! Pile is empty");
+	            return;
+	        }
+	        
+	        //add centerPile to other players' hands, using players array.
+	        while (!centerPile.isEmpty()) {
+	            for (Player player : players) {
+	                if (player.playerID == p.playerID) {
+	                    continue;
+	                }
+	                player.addCardToHand(centerPile.get(0));
+	                centerPile.remove(0);
+	            }
+	        }
+	    }
 	}
 	
     public static void main (String[] args)
