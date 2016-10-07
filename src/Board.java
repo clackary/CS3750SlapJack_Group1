@@ -71,13 +71,7 @@ public class Board extends JPanel
 		
 		configureBoard();
 		createPlayers();
-		
-		centerPanel = new JPanel();
-		centerPanel.setOpaque(false);
-		centerPanel.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
-		centerPanel.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
-		centerPanel.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
-		centerPanel.setLayout(null);
+		createCenterPanel();
 		
 		this.add(player1);
 		this.add(centerPanel);
@@ -194,6 +188,14 @@ public class Board extends JPanel
 		player2 = new Player(this, 2);
 	}
 	
+	private void createCenterPanel() {
+		centerPanel = new JPanel();
+		centerPanel.setOpaque(false);
+		centerPanel.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
+		centerPanel.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
+		centerPanel.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
+		centerPanel.setLayout(null);
+	}
 
 	private void configureBoard() {
 		this.setBackground(bgColor); //temporary, unless we like it		
