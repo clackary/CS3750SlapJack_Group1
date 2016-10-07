@@ -15,6 +15,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BoxLayout;
+import java.util.concurrent.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -27,6 +28,11 @@ import java.net.URL;
 
 public class Board extends JPanel
 {
+	static Color bgColor = new Color(6, 10, 25);
+	
+	Runnable turnGlowOff;
+	Board thisBoard;
+	
 	Deck deck;
 	JPanel board;
 	JPanel centerPanel; //where the center pile will be displayed
@@ -35,6 +41,8 @@ public class Board extends JPanel
 	ArrayList<Card> centerPile;
 	Card testCard1, testCard2, testCard3;
 	Random random;
+	int playerCollecting;  //id of player who slaps and collects
+	boolean turnGlowOn; //when a player collects center pile, their side briefly glows
 	int playerUp;  //id of player who's turn it is
 	private boolean soundOn = true;
 	int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -45,7 +53,12 @@ public class Board extends JPanel
 	private final URL slapURL = Deck.class.getResource("sounds/slap.wav");
 	
 	public Board(){
-		
+		thisBoard = this;
+		turnGlowOff = new Runnable() {
+			public void run() {
+				thisBoard.repaint();
+			}
+		};
 		//takes up whole screen but leaves room at bottom
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight - (screenHeight / 20))); 
 		this.setVisible(true);
@@ -53,6 +66,8 @@ public class Board extends JPanel
 		centerPile = new ArrayList<>();
 		random = new Random();//for randomizing card rotation
 		playerUp = 1;
+		
+		turnGlowOn = false; //a call to this.repaint will turn on a glow if turnGlowOn is true
 		
 		configureBoard();
 		createPlayers();
@@ -144,6 +159,22 @@ public class Board extends JPanel
 		}
 	}
 
+	//toggles the visual indicators of whose turn it is
+	public void togglePlayersTurn(){
+		if (playerUp == 1){
+			playerUp = 2;
+			player1.showPlayersTurn(false);
+			player2.showPlayersTurn(true);
+			player1.setPlayButtonEnabled(false);
+			player2.setPlayButtonEnabled(true);
+		}else{
+			playerUp = 1;
+			player1.showPlayersTurn(true);
+			player2.showPlayersTurn(false);
+			player1.setPlayButtonEnabled(true);
+			player2.setPlayButtonEnabled(false);
+		}
+	}
 
 	
 	public boolean isTopCardJack(){
@@ -153,25 +184,6 @@ public class Board extends JPanel
         }
 		return false;
 	}
-	
-	
-	//toggles the visual indicators of whose turn it is
-		public void togglePlayersTurn(){
-			if (playerUp == 1){
-				playerUp = 2;
-				player1.showPlayersTurn(false);
-				player2.showPlayersTurn(true);
-				player1.setPlayButtonEnabled(false);
-				player2.setPlayButtonEnabled(true);
-			}else{
-				playerUp = 1;
-				player1.showPlayersTurn(true);
-				player2.showPlayersTurn(false);
-				player1.setPlayButtonEnabled(true);
-				player2.setPlayButtonEnabled(false);
-			}
-		}
-	
 	
 	private void createPlayers() {
 		player1 = new Player(this, 1);
@@ -235,27 +247,35 @@ public class Board extends JPanel
 		}
 	}
 	
-/*	@Override
-	protected void paintComponent(Graphics g) {
+	@Override
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		drawGlow(g, 1);
-	}*/
+		if (turnGlowOn){
+			drawGlow(g, playerCollecting);
+			turnGlowOn = false;
+		}
+	}
 
 	
 	
-	/*  playing with maybe using a less sublte version of this to indicate which player just
+	/*  playing with maybe using a less subtle version of this to indicate which player just
 	 *  won the cards. 
 	 * 
 	 */
 	private void drawGlow(Graphics g, int playerID) {
-		int centerX = (int)(player1.getPreferredSize().getWidth() / 2);
-		int centerY = (int)(player1.getPreferredSize().getHeight() / 3);
+		int centerX, centerY;
+		if (playerID == 1){
+			centerX = (int)(player1.getPreferredSize().getWidth() / 2);
+			centerY = (int)(player1.getPreferredSize().getHeight() / 3);
+		}else{
+			centerX = (int)((player2.getPreferredSize().getWidth() / 2) + (2 * player2.getPreferredSize().getWidth()));
+			centerY = (int)((player2.getPreferredSize().getHeight() / 3));
+		}
 		
 		Point2D gradient_CenterPoint = new Point2D.Float(centerX, centerY);
 		float radius = 400f;
 		float[] dist = { 0.2f, .8f };  //first float is where first color begins, and then gradually reaches second color at second float
-		Color[] colors = { new Color(255, 255, 255, 40), new Color(255, 255, 255, 0) };
+		Color[] colors = { new Color(255, 255, 255, 80), new Color(255, 255, 255, 0) };
 
 		RadialGradientPaint radialGradientPaint = new RadialGradientPaint(gradient_CenterPoint, radius, dist,
 				colors);
@@ -263,11 +283,7 @@ public class Board extends JPanel
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setPaint(radialGradientPaint);
 		g2d.fillArc(centerX-400, centerY-400, 800, 800, 0, 360);//upper left-hand corner, width, height, startArc, endArc
-	}
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		//drawGlow(g, playerUp);
+		
+		Slapjack.executor.schedule(turnGlowOff, 1, TimeUnit.SECONDS);
 	}
 }
