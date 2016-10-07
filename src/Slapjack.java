@@ -2,6 +2,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,6 +15,9 @@ import javax.swing.WindowConstants;
 public class Slapjack extends JFrame{
 	
 	private boolean soundOn = true;
+	
+	//using this to turn off the glow after Player collects center pile
+	public static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 	public Slapjack(){
 		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -42,6 +48,7 @@ public class Slapjack extends JFrame{
 		exit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				executor.shutdown();
 				System.exit(0);
 			}
 		});
