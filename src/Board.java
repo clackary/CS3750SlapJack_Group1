@@ -20,6 +20,7 @@ import java.awt.geom.Point2D;
 
 public class Board extends JPanel
 {
+	static Color bgColor = new Color(6, 10, 25);
 	Deck deck;
 	JPanel board;
 	JPanel centerPanel; //where the center pile will be displayed
@@ -62,7 +63,20 @@ public class Board extends JPanel
 
 		player1.addHandToBoard();
 		player2.addHandToBoard();
+		player1.showPlayersTurn(true);
 		
+	}
+	
+	public void togglePlayersTurn(){
+		if (playerUp == 1){
+			playerUp = 2;
+			player1.showPlayersTurn(false);
+			player2.showPlayersTurn(true);
+		}else{
+			playerUp = 1;
+			player1.showPlayersTurn(true);
+			player2.showPlayersTurn(false);
+		}
 	}
 	
 	private void dealCardsToPlayers() {
@@ -138,7 +152,7 @@ public class Board extends JPanel
 	
 
 	private void configureBoard() {
-		this.setBackground(new Color(6, 10, 25)); //temporary, unless we like it		
+		this.setBackground(bgColor); //temporary, unless we like it		
 		 									//	horizontally-oriented  BoxLayout so there will be a 
 		 									//* Player 1 panel on the left, a Center panel,
 											//* and a Player 2 panel on the right.
@@ -166,7 +180,7 @@ public class Board extends JPanel
 		Point2D gradient_CenterPoint = new Point2D.Float(centerX, centerY);
 		float radius = 400f;
 		float[] dist = { 0.2f, .8f };  //first float is where first color begins, and then gradually reaches second color at second float
-		Color[] colors = { new Color(255, 255, 255, 40), new Color(255, 255, 255, 0) };
+		Color[] colors = { new Color(255, 255, 255, 80), new Color(255, 255, 255, 0) };
 
 		RadialGradientPaint radialGradientPaint = new RadialGradientPaint(gradient_CenterPoint, radius, dist,
 				colors);

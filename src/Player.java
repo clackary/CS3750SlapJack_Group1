@@ -5,16 +5,22 @@ import java.awt.RadialGradientPaint;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import sun.misc.Queue;
 
 public class Player extends JPanel
 {
+	static Color btnColor_playersTurn = new Color(0,102,29);
+	static Color btnColor_regular = new Color(178,18,18);
 	Board theBoard;
 	ArrayList<Card> hand;
 	JPanel handPanel, controlPanel;
@@ -37,8 +43,9 @@ public class Player extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
 		
-		btn_playTopCard = new JButton("Play Top Card");
-		btn_slap = new JButton("Slap");
+		createHandPanel();		
+		createControlPanel();
+		createButtons();
 		
 		//Player 1 has A and S keys
 		//Player 2 has K and L keys
@@ -46,8 +53,10 @@ public class Player extends JPanel
 			.put(KeyStroke.getKeyStroke(playerID==1 ? 'a' : 'k'), "playTopCard");
 		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
 		    public void actionPerformed(ActionEvent arg0) {
-		    	if (!hand.isEmpty())
+		    	if (!hand.isEmpty()){
 		    		theBoard.placeCardOnCenterPile(playTopCard());
+		    		theBoard.togglePlayersTurn();
+		    	}
 		    }
 		});
 		
@@ -63,6 +72,7 @@ public class Player extends JPanel
 		btn_playTopCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				theBoard.placeCardOnCenterPile(playTopCard());
+				theBoard.togglePlayersTurn();
 			}
 		});
 		
@@ -74,14 +84,41 @@ public class Player extends JPanel
 			}
 		});
 		
-		createHandPanel();		
-		createControlPanel();
+		
 			
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
 
 		this.add(handPanel);
 		this.add(controlPanel);
+	}
+
+	private void createButtons() {
+		btn_playTopCard = new JButton("Play Top Card" + "      ["
+				+ (playerID == 1 ? "A" : "K") + "]");
+		btn_slap = new JButton("Slap      ["
+				+ (playerID == 1 ? "S" : "L") + "]");
+		btn_playTopCard.setLocation((int) (controlPanel.getPreferredSize().getWidth()/2)-150, 0);
+		btn_slap.setLocation((int) (controlPanel.getPreferredSize().getWidth()/2)-150, 60);
+		configureButtons(btn_playTopCard);
+		configureButtons(btn_slap);
+	}
+
+	private void configureButtons(JButton button) {
+		button.setFocusPainted(false);
+		button.setSize(300, 45);
+		button.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 24));
+		button.setBackground(btnColor_regular);
+		button.setForeground(Color.WHITE);
+		button.setBorder(new LineBorder(Color.WHITE, 2));
+	}
+	
+	public void showPlayersTurn(boolean playerIsUp){
+		if (playerIsUp){
+			btn_playTopCard.setBackground(btnColor_playersTurn);
+		}else{
+			btn_playTopCard.setBackground(btnColor_regular);
+		}
 	}
 	
 	public void addHandToBoard(){
@@ -164,19 +201,19 @@ public class Player extends JPanel
 	private void createControlPanel() {
 		controlPanel = new JPanel();	
 		controlPanel.setOpaque(false);
-		controlPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .25)));
-		controlPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .25)));
-		controlPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .25)));
-		
+		controlPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .3)));
+		controlPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .3)));
+		controlPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .3)));
+		controlPanel.setLayout(null);
 	}
 
 	private void createHandPanel() {
 		handPanel = new JPanel();
 		handPanel.setOpaque(false);
 		handPanel.setLayout(null);//so that Card objects can be positioned
-		handPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
-		handPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
-		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .75)));
+		handPanel.setPreferredSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
+		handPanel.setMinimumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
+		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
 	}
 	
 
