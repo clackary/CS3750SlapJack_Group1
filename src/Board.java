@@ -3,14 +3,28 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BoxLayout;
+import java.util.concurrent.*;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import java.util.Random;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
-import java.util.concurrent.*;
+import java.io.IOException;
+import java.net.URL;
 
 public class Board extends JPanel
 {
@@ -27,14 +41,16 @@ public class Board extends JPanel
 	ArrayList<Card> centerPile;
 	Card testCard1, testCard2, testCard3;
 	Random random;
-	
-	int playerUp;  //id of player whose turn it is
 	int playerCollecting;  //id of player who slaps and collects
-	
 	boolean turnGlowOn; //when a player collects center pile, their side briefly glows
-	
+	int playerUp;  //id of player who's turn it is
+	private boolean soundOn = true;
 	int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	
+	private final URL shuffleURL = Deck.class.getResource("sounds/cardShuffle.wav");
+	private final URL playURL = Deck.class.getResource("sounds/cardDeal.wav");
+	private final URL slapURL = Deck.class.getResource("sounds/slap.wav");
 	
 	public Board(){
 		thisBoard = this;
@@ -46,11 +62,11 @@ public class Board extends JPanel
 		//takes up whole screen but leaves room at bottom
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight - (screenHeight / 20))); 
 		this.setVisible(true);
-		
 		deck = new Deck();
 		centerPile = new ArrayList<>();
 		random = new Random();//for randomizing card rotation
 		playerUp = 1;
+		
 		turnGlowOn = false; //a call to this.repaint will turn on a glow if turnGlowOn is true
 		
 		configureBoard();
@@ -69,27 +85,12 @@ public class Board extends JPanel
 		player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
 		player2.setPlayButtonEnabled(false);
 	}
-
-	
-	//toggles the visual indicators of whose turn it is
-	public void togglePlayersTurn(){
-		if (playerUp == 1){
-			playerUp = 2;
-			player1.showPlayersTurn(false);
-			player2.showPlayersTurn(true);
-			player1.setPlayButtonEnabled(false);
-			player2.setPlayButtonEnabled(true);
-		}else{
-			playerUp = 1;
-			player1.showPlayersTurn(true);
-			player2.showPlayersTurn(false);
-			player1.setPlayButtonEnabled(true);
-			player2.setPlayButtonEnabled(false);
-		}
-	}
 	
 	private void dealCardsToPlayers() {
 		ArrayList<Card> dealtCards = new ArrayList<>();
+		if(soundOn){
+			this.shuffleSound();
+		}
 		deck.shuffle();
 		dealtCards.addAll(deck.getCards(26));
 		player1.addCardsToHand(dealtCards);
@@ -110,11 +111,17 @@ public class Board extends JPanel
 		centerPanel.add(topCard);
 		topCard.setFaceUp(true);
 		centerPanel.setComponentZOrder(topCard, 0);
+		if(soundOn){
+			this.playSound();
+		}
 		centerPanel.repaint();
 	}
 	
 	// Board.slap(playerId) is called by the player who slapped.
 	public void slap(int playerID){
+		if(soundOn){
+			this.slapSound();
+		}
 		Player theSlappingPlayer;
 		Player theOtherPlayer;  
 				
@@ -137,6 +144,9 @@ public class Board extends JPanel
 				theSlappingPlayer = (playerID == 1 ? player2 : player1);
 			}
 			Collections.shuffle(centerPile);
+			if(soundOn){
+				this.shuffleSound();
+			}
 			theSlappingPlayer.addCardsToHand(centerPile);
 			playerCollecting = theSlappingPlayer.playerID;
 			turnGlowOn = true;
@@ -147,6 +157,22 @@ public class Board extends JPanel
 		}
 	}
 
+	//toggles the visual indicators of whose turn it is
+	public void togglePlayersTurn(){
+		if (playerUp == 1){
+			playerUp = 2;
+			player1.showPlayersTurn(false);
+			player2.showPlayersTurn(true);
+			player1.setPlayButtonEnabled(false);
+			player2.setPlayButtonEnabled(true);
+		}else{
+			playerUp = 1;
+			player1.showPlayersTurn(true);
+			player2.showPlayersTurn(false);
+			player1.setPlayButtonEnabled(true);
+			player2.setPlayButtonEnabled(false);
+		}
+	}
 
 	
 	public boolean isTopCardJack(){
@@ -180,19 +206,68 @@ public class Board extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 	}
 	
-
+	public void setSound(boolean sound){
+		soundOn = sound;
+	}
 	
+	public boolean isSoundOn(){
+		return soundOn;
+	}
+	
+	public void shuffleSound(){
+		try{
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(shuffleURL);
+	         // Get a sound clip resource.
+	         Clip clip = AudioSystem.getClip();
+	         // Open audio clip and load samples from the audio input stream.
+	         clip.open(audioIn);
+	         clip.start();
+		}catch(NullPointerException | UnsupportedAudioFileException | IOException | LineUnavailableException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void playSound(){
+		try{
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(playURL);
+	         // Get a sound clip resource.
+	         Clip clip = AudioSystem.getClip();
+	         // Open audio clip and load samples from the audio input stream.
+	         clip.open(audioIn);
+	         clip.start();
+		}catch(NullPointerException | UnsupportedAudioFileException | IOException | LineUnavailableException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void slapSound(){
+		try{
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(slapURL);
+	         // Get a sound clip resource.
+	         Clip clip = AudioSystem.getClip();
+	         // Open audio clip and load samples from the audio input stream.
+	         clip.open(audioIn);
+	         clip.start();
+		}catch(NullPointerException | UnsupportedAudioFileException | IOException | LineUnavailableException e){
+			e.printStackTrace();
+		}
+	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (turnGlowOn){
 			drawGlow(g, playerCollecting);
 			turnGlowOn = false;
 		}
 	}
+
 	
 	
+	/*  playing with maybe using a less subtle version of this to indicate which player just
+	 *  won the cards. 
+	 * 
+	 */
 	private void drawGlow(Graphics g, int playerID) {
 		int centerX, centerY;
 		if (playerID == 1){
@@ -202,7 +277,7 @@ public class Board extends JPanel
 			centerX = (int)((player2.getPreferredSize().getWidth() / 2) + (2 * player2.getPreferredSize().getWidth()));
 			centerY = (int)((player2.getPreferredSize().getHeight() / 3));
 		}
-			
+		
 		Point2D gradient_CenterPoint = new Point2D.Float(centerX, centerY);
 		float radius = 400f;
 		float[] dist = { 0.2f, .8f };  //first float is where first color begins, and then gradually reaches second color at second float
@@ -217,6 +292,4 @@ public class Board extends JPanel
 		
 		Slapjack.executor.schedule(turnGlowOff, 1, TimeUnit.SECONDS);
 	}
-	
-	
 }
