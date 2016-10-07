@@ -10,6 +10,8 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 public class Slapjack extends JFrame{
+	
+	private boolean soundOn = true;
 
 	public Slapjack(){
 		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -45,8 +47,30 @@ public class Slapjack extends JFrame{
 		});
 		gameMenu.add(newGame);
 		gameMenu.add(exit);
+		JMenu soundMenu = new JMenu("Sound");
+		JMenuItem toggleSound = new JMenuItem("Turn Off");
+		toggleSound.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(soundOn){
+					soundOn = false;
+					toggleSound.setText("Turn On");
+					//I haven't added any sound yet, but I am working on that now. This just makes it easy to implement.
+				}
+				else {
+					soundOn = true;
+					toggleSound.setText("Turn Off");
+				}
+			}
+		});
+		soundMenu.add(toggleSound);
 		menuBar.add(gameMenu);
+		menuBar.add(soundMenu);
 		this.setJMenuBar(menuBar);
+	}
+	
+	public boolean isSoundOn(){
+		return soundOn;
 	}
 	
 	private void newGame(){
