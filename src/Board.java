@@ -16,7 +16,6 @@ public class Board extends JPanel
 {
 	static Color bgColor = new Color(6, 10, 25);
 	
-	ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	Runnable turnGlowOff;
 	Board thisBoard;
 	
@@ -216,7 +215,7 @@ public class Board extends JPanel
 		g2d.setPaint(radialGradientPaint);
 		g2d.fillArc(centerX-400, centerY-400, 800, 800, 0, 360);//upper left-hand corner, width, height, startArc, endArc
 		
-		executor.schedule(turnGlowOff, 1, TimeUnit.SECONDS);
+		Slapjack.executor.schedule(turnGlowOff, 1, TimeUnit.SECONDS);
 	}
 	
 	

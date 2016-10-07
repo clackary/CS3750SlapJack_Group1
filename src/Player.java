@@ -54,6 +54,8 @@ public class Player extends JPanel
 		//Player 2 has K and L keys
 		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 			.put(KeyStroke.getKeyStroke(playerID==1 ? 'a' : 'k'), "playTopCard");
+		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		.put(KeyStroke.getKeyStroke(playerID==1 ? 'A' : 'K'), "playTopCard");//also caps lock
 		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
 		    public void actionPerformed(ActionEvent arg0) {
 		    	if (!hand.isEmpty()){
@@ -65,6 +67,8 @@ public class Player extends JPanel
 		
 		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(playerID == 1 ? 's' : 'l'), "slap");
+		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		.put(KeyStroke.getKeyStroke(playerID == 1 ? 'S' : 'L'), "slap");//also caps
 		btn_slap.getActionMap().put("slap", new AbstractAction() {
 			public void actionPerformed(ActionEvent arg0) {
 				theBoard.slap(playerID);
