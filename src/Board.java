@@ -17,10 +17,15 @@ import java.util.Random;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
+import java.util.concurrent.*;
 
 public class Board extends JPanel
 {
 	static Color bgColor = new Color(6, 10, 25);
+	ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	Runnable turnGlowOff;
+	Board thisBoard;
+	
 	Deck deck;
 	JPanel board;
 	JPanel centerPanel; //where the center pile will be displayed
@@ -29,13 +34,21 @@ public class Board extends JPanel
 	ArrayList<Card> centerPile;
 	Card testCard1, testCard2, testCard3;
 	Random random;
-	int playerUp;  //id of player who's turn it is
+	int playerUp;  //id of player whose turn it is
+	int playerCollecting;  //id of player who slaps and collects
+	
+	boolean turnGlowOn; //when a player slaps and gathers cards, their side briefly glows
 	
 	int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	
 	public Board(){
-		
+		thisBoard = this;
+		turnGlowOff = new Runnable() {
+			public void run() {
+				thisBoard.repaint();
+			}
+		};
 		//takes up whole screen but leaves room at bottom
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight - (screenHeight / 20))); 
 		this.setVisible(true);
@@ -43,6 +56,7 @@ public class Board extends JPanel
 		centerPile = new ArrayList<>();
 		random = new Random();//for randomizing card rotation
 		playerUp = 1;
+		turnGlowOn = false;
 		
 		configureBoard();
 		createPlayers();
@@ -72,10 +86,14 @@ public class Board extends JPanel
 			playerUp = 2;
 			player1.showPlayersTurn(false);
 			player2.showPlayersTurn(true);
+			player1.setPlayButtonEnabled(false);
+			player2.setPlayButtonEnabled(true);
 		}else{
 			playerUp = 1;
 			player1.showPlayersTurn(true);
 			player2.showPlayersTurn(false);
+			player1.setPlayButtonEnabled(true);
+			player2.setPlayButtonEnabled(false);
 		}
 	}
 	
@@ -129,6 +147,9 @@ public class Board extends JPanel
 			}
 			Collections.shuffle(centerPile);
 			theSlappingPlayer.addCardsToHand(centerPile);
+			playerCollecting = theSlappingPlayer.playerID;
+			turnGlowOn = true;
+			this.repaint();			
 			centerPile.clear();
 			centerPanel.repaint();
 			theSlappingPlayer.addHandToBoard();
@@ -160,23 +181,29 @@ public class Board extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 	}
 	
-/*	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		drawGlow(g, 1);
-	}*/
 
 	
 	
-	/*  playing with maybe using a less sublte version of this to indicate which player just
-	 *  won the cards. 
-	 * 
-	 */
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if (turnGlowOn){
+			drawGlow(g, playerCollecting);
+			turnGlowOn = false;
+		}
+	}
+	
+	
 	private void drawGlow(Graphics g, int playerID) {
-		int centerX = (int)(player1.getPreferredSize().getWidth() / 2);
-		int centerY = (int)(player1.getPreferredSize().getHeight() / 3);
-		
+		int centerX, centerY;
+		if (playerID == 1){
+			centerX = (int)(player1.getPreferredSize().getWidth() / 2);
+			centerY = (int)(player1.getPreferredSize().getHeight() / 3);
+		}else{
+			centerX = (int)((player2.getPreferredSize().getWidth() / 2) + (2 * player2.getPreferredSize().getWidth()));
+			centerY = (int)((player2.getPreferredSize().getHeight() / 3));
+		}
+			
 		Point2D gradient_CenterPoint = new Point2D.Float(centerX, centerY);
 		float radius = 400f;
 		float[] dist = { 0.2f, .8f };  //first float is where first color begins, and then gradually reaches second color at second float
@@ -188,11 +215,9 @@ public class Board extends JPanel
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setPaint(radialGradientPaint);
 		g2d.fillArc(centerX-400, centerY-400, 800, 800, 0, 360);//upper left-hand corner, width, height, startArc, endArc
+		
+		executor.schedule(turnGlowOff, 1, TimeUnit.SECONDS);
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		//drawGlow(g, playerUp);
-	}
+	
 }

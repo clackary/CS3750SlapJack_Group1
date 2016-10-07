@@ -121,6 +121,10 @@ public class Player extends JPanel
 		}
 	}
 	
+	public void setPlayButtonEnabled(boolean enabled){
+		btn_playTopCard.setEnabled(enabled);
+	}
+	
 	public void addHandToBoard(){
 		//first clear the cards that are already on the board
 		handPanel.removeAll();
