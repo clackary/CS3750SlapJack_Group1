@@ -2,22 +2,18 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
 public class Slapjack extends JFrame{
 	
-	private boolean soundOn = true;
-	
-	//using this to turn off the glow after Player collects center pile
-	public static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	Board board;
 
 	public Slapjack(){
 		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -28,7 +24,7 @@ public class Slapjack extends JFrame{
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		createMenu();
 		this.repaint();
-		Board board = new Board();
+		board = new Board();
 		this.add(board);
 		this.pack();//this way the board JPanel shows up
 
@@ -48,7 +44,6 @@ public class Slapjack extends JFrame{
 		exit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				executor.shutdown();
 				System.exit(0);
 			}
 		});
@@ -59,13 +54,13 @@ public class Slapjack extends JFrame{
 		toggleSound.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(soundOn){
-					soundOn = false;
+				if(board.isSoundOn()){
+					board.setSound(false);
 					toggleSound.setText("Turn On");
 					//I haven't added any sound yet, but I am working on that now. This just makes it easy to implement.
 				}
 				else {
-					soundOn = true;
+					board.setSound(true);
 					toggleSound.setText("Turn Off");
 				}
 			}
@@ -76,16 +71,23 @@ public class Slapjack extends JFrame{
 		this.setJMenuBar(menuBar);
 	}
 	
-	public boolean isSoundOn(){
-		return soundOn;
-	}
-	
 	private void newGame(){
 		this.dispose();
 		new Slapjack();
 	}
 	
 	public static void main(String[] args){
+		try{
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //The System UI
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) { //Nimbus UI
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		}catch(Exception e){
+			e.printStackTrace(); //this should really never happen
+		}
 		new Slapjack();
 	}
 }
