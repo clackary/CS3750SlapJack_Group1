@@ -88,6 +88,8 @@ public class Board extends JPanel
 
 		player1.addHandToBoard();
 		player2.addHandToBoard();
+		player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
+		player2.setPlayButtonEnabled(false);
 		
 	}
 	
