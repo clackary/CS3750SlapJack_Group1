@@ -160,17 +160,21 @@ public class Board extends JPanel
 	//toggles the visual indicators of whose turn it is
 	public void togglePlayersTurn(){
 		if (playerUp == 1){
-			playerUp = 2;
-			player1.showPlayersTurn(false);
-			player2.showPlayersTurn(true);
-			player1.setPlayButtonEnabled(false);
-			player2.setPlayButtonEnabled(true);
+			if (player2.handSize()!=0){
+				playerUp = 2;
+				player1.showPlayersTurn(false);
+				player2.showPlayersTurn(true);
+				player1.setPlayButtonEnabled(false);
+				player2.setPlayButtonEnabled(true);
+			}
 		}else{
-			playerUp = 1;
-			player1.showPlayersTurn(true);
-			player2.showPlayersTurn(false);
-			player1.setPlayButtonEnabled(true);
-			player2.setPlayButtonEnabled(false);
+			if (player1.handSize()!=0){
+				playerUp = 1;
+				player1.showPlayersTurn(true);
+				player2.showPlayersTurn(false);
+				player1.setPlayButtonEnabled(true);
+				player2.setPlayButtonEnabled(false);
+			}
 		}
 	}
 
