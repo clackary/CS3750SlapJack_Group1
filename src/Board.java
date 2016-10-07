@@ -90,7 +90,6 @@ public class Board extends JPanel
 		player2.addHandToBoard();
 		player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
 		player2.setPlayButtonEnabled(false);
-		
 	}
 	
 	private void dealCardsToPlayers() {
@@ -111,7 +110,7 @@ public class Board extends JPanel
 		Card topCard = centerPile.get(0);
 		
 		int xPos = (int) (centerPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2);
-		int yPos = 40 ;
+		int yPos = 40;
 
 		topCard.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		topCard.setRotation(random.nextDouble() * .25 * (centerPile.size() % 2 == 0 ? -1.0 : 1.0)); //alternates direction of rotation
@@ -155,6 +154,9 @@ public class Board extends JPanel
 				this.shuffleSound();
 			}
 			theSlappingPlayer.addCardsToHand(centerPile);
+			playerCollecting = theSlappingPlayer.playerID;
+			turnGlowOn = true;
+			this.repaint();//calls the glow method
 			centerPile.clear();
 			centerPanel.repaint();
 			theSlappingPlayer.addHandToBoard();
