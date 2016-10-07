@@ -13,12 +13,16 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Slapjack extends JFrame{
 	
 	Board board;
 	private final URL iconURL = Slapjack.class.getResource("images/slapjack.png");
 	private final Image icon = new ImageIcon(iconURL).getImage();
+	//using this to turn off the glow after Player collects center pile
+	public static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 	public Slapjack(){
 		this.setIconImage(icon);
