@@ -1,7 +1,10 @@
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -14,8 +17,12 @@ import javax.swing.WindowConstants;
 public class Slapjack extends JFrame{
 	
 	Board board;
+	private final URL iconURL = Slapjack.class.getResource("images/slapjack.png");
+	private final Image icon = new ImageIcon(iconURL).getImage();
 
 	public Slapjack(){
+		this.setIconImage(icon);
+		this.setTitle("Slapjack - Group 1");
 		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		//takes up whole screen but leaves room at bottom
@@ -33,14 +40,28 @@ public class Slapjack extends JFrame{
 	private void createMenu(){
 		JMenuBar menuBar = new JMenuBar();
 		JMenu gameMenu = new JMenu("Game");
-		JMenuItem newGame = new JMenuItem("New Game");
+		JMenuItem changeKeys = new JMenuItem("Change Keys", 'C');
+		changeKeys.setToolTipText("Change The Keys Used To Place Cards And Slap");
+		changeKeys.setAccelerator(KeyStroke.getKeyStroke("alt C"));
+		changeKeys.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Do something here - probably call board
+			}
+		});
+		gameMenu.add(changeKeys);
+		gameMenu.addSeparator();
+		JMenuItem newGame = new JMenuItem("New Game", 'N');
+		newGame.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
+		newGame.setToolTipText("Starts A New Game");
 		newGame.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newGame();
 			}
 		});
-		JMenuItem exit = new JMenuItem("Exit");
+		JMenuItem exit = new JMenuItem("Exit", 'E');
+		exit.setToolTipText("Exits The Game");
 		exit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -50,14 +71,14 @@ public class Slapjack extends JFrame{
 		gameMenu.add(newGame);
 		gameMenu.add(exit);
 		JMenu soundMenu = new JMenu("Sound");
-		JMenuItem toggleSound = new JMenuItem("Turn Off");
+		JMenuItem toggleSound = new JMenuItem("Turn Off", 'O');
+		toggleSound.setAccelerator(KeyStroke.getKeyStroke("alt S"));
 		toggleSound.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(board.isSoundOn()){
 					board.setSound(false);
 					toggleSound.setText("Turn On");
-					//I haven't added any sound yet, but I am working on that now. This just makes it easy to implement.
 				}
 				else {
 					board.setSound(true);
