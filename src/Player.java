@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ import sun.misc.Queue;
 public class Player extends JPanel
 {
 	static Color btnColor_playersTurn = new Color(0,102,29);
+	static Color btnColor_playersTurn_hover = new Color(0,131,29);
 	static Color btnColor_regular = new Color(178,18,18);
+	static Color btnColor_regular_hover = new Color(208,18,18);
 	Board theBoard;
 	ArrayList<Card> hand;
 	JPanel handPanel, controlPanel;
@@ -114,8 +117,24 @@ public class Player extends JPanel
 		button.setBackground(btnColor_regular);
 		button.setForeground(Color.WHITE);
 		button.setBorder(new LineBorder(Color.WHITE, 2));
-		
+		button.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent e) {
+			      JButton btn = (JButton)e.getSource();
+			      if (btn.getBackground()== btnColor_playersTurn)
+			    	  btn.setBackground(btnColor_playersTurn_hover);
+			      else
+			    	  btn.setBackground(btnColor_regular_hover);
+			  }
+			public void mouseExited(MouseEvent e) {
+			      JButton btn = (JButton)e.getSource();
+			      if (btn.getBackground()==btnColor_playersTurn_hover)
+			    	  btn.setBackground(btnColor_playersTurn);
+			      else
+			    	  btn.setBackground(btnColor_regular);
+			  }
+		});
 	}
+	
 	
 	/*  Changes playTopCard button color for the player
 	 *  whose turn it is
