@@ -104,6 +104,9 @@ public class Player extends JPanel
 		configureButtons(btn_slap);
 	}
 
+	/*  a method to do 1000 things to buttons but not
+	 *  have to repeat the same code twice.
+	 */
 	private void configureButtons(JButton button) {
 		button.setFocusPainted(false);
 		button.setSize(300, 45);
@@ -111,8 +114,12 @@ public class Player extends JPanel
 		button.setBackground(btnColor_regular);
 		button.setForeground(Color.WHITE);
 		button.setBorder(new LineBorder(Color.WHITE, 2));
+		
 	}
 	
+	/*  Changes playTopCard button color for the player
+	 *  whose turn it is
+	 */
 	public void showPlayersTurn(boolean playerIsUp){
 		if (playerIsUp){
 			btn_playTopCard.setBackground(btnColor_playersTurn);
@@ -121,6 +128,7 @@ public class Player extends JPanel
 		}
 	}
 	
+	//called by Board to toggle who can use the button
 	public void setPlayButtonEnabled(boolean enabled){
 		btn_playTopCard.setEnabled(enabled);
 	}
@@ -220,6 +228,5 @@ public class Player extends JPanel
 		handPanel.setMaximumSize(new Dimension(screenWidth/3, (int)(screenHeight * .7)));
 	}
 	
-
 	
 }

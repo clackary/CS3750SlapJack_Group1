@@ -3,16 +3,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 import java.util.Random;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
@@ -22,6 +15,7 @@ import java.util.concurrent.*;
 public class Board extends JPanel
 {
 	static Color bgColor = new Color(6, 10, 25);
+	
 	ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	Runnable turnGlowOff;
 	Board thisBoard;
@@ -34,10 +28,11 @@ public class Board extends JPanel
 	ArrayList<Card> centerPile;
 	Card testCard1, testCard2, testCard3;
 	Random random;
+	
 	int playerUp;  //id of player whose turn it is
 	int playerCollecting;  //id of player who slaps and collects
 	
-	boolean turnGlowOn; //when a player slaps and gathers cards, their side briefly glows
+	boolean turnGlowOn; //when a player collects center pile, their side briefly glows
 	
 	int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -52,21 +47,16 @@ public class Board extends JPanel
 		//takes up whole screen but leaves room at bottom
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight - (screenHeight / 20))); 
 		this.setVisible(true);
+		
 		deck = new Deck();
 		centerPile = new ArrayList<>();
 		random = new Random();//for randomizing card rotation
 		playerUp = 1;
-		turnGlowOn = false;
+		turnGlowOn = false; //a call to this.repaint will turn on a glow if turnGlowOn is true
 		
 		configureBoard();
 		createPlayers();
-		
-		centerPanel = new JPanel();
-		centerPanel.setOpaque(false);
-		centerPanel.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
-		centerPanel.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
-		centerPanel.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
-		centerPanel.setLayout(null);
+		createCenterPanel();
 		
 		this.add(player1);
 		this.add(centerPanel);
@@ -77,10 +67,12 @@ public class Board extends JPanel
 
 		player1.addHandToBoard();
 		player2.addHandToBoard();
-		player1.showPlayersTurn(true);
-		
+		player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
+		player2.setPlayButtonEnabled(false);
 	}
+
 	
+	//toggles the visual indicators of whose turn it is
 	public void togglePlayersTurn(){
 		if (playerUp == 1){
 			playerUp = 2;
@@ -112,7 +104,7 @@ public class Board extends JPanel
 		Card topCard = centerPile.get(0);
 		
 		int xPos = (int) (centerPanel.getPreferredSize().getWidth() /2 - (Card.CARD_WI + 100) / 2);
-		int yPos = 40 ;
+		int yPos = 40;
 
 		topCard.setBounds(xPos, yPos, Card.CARD_WI + 100, Card.CARD_HI +60); //the added pixels give space for the image to be drawn on the card
 		topCard.setRotation(random.nextDouble() * .25 * (centerPile.size() % 2 == 0 ? -1.0 : 1.0)); //alternates direction of rotation
@@ -149,7 +141,7 @@ public class Board extends JPanel
 			theSlappingPlayer.addCardsToHand(centerPile);
 			playerCollecting = theSlappingPlayer.playerID;
 			turnGlowOn = true;
-			this.repaint();			
+			this.repaint();//calls the glow method
 			centerPile.clear();
 			centerPanel.repaint();
 			theSlappingPlayer.addHandToBoard();
@@ -171,6 +163,14 @@ public class Board extends JPanel
 		player2 = new Player(this, 2);
 	}
 	
+	private void createCenterPanel() {
+		centerPanel = new JPanel();
+		centerPanel.setOpaque(false);
+		centerPanel.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
+		centerPanel.setMaximumSize(new Dimension(screenWidth/3, screenHeight));
+		centerPanel.setMinimumSize(new Dimension(screenWidth/3, screenHeight));
+		centerPanel.setLayout(null);
+	}
 
 	private void configureBoard() {
 		this.setBackground(bgColor); //temporary, unless we like it		
