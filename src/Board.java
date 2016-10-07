@@ -1,6 +1,7 @@
 import java.util.Collections;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ import javax.swing.WindowConstants;
 import java.util.Random;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URL;
@@ -84,6 +86,8 @@ public class Board extends JPanel
 		player2.addHandToBoard();
 		player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
 		player2.setPlayButtonEnabled(false);
+		
+		//centerPanel.add(new WinMessage(1));for testing
 	}
 	
 	private void dealCardsToPlayers() {
@@ -137,7 +141,7 @@ public class Board extends JPanel
 					theOtherPlayer = player1;
 				}
 				if (theOtherPlayer.handSize() == 0){
-					System.out.println("Player " + theSlappingPlayer.playerID + " wins!");
+					centerPanel.add(new WinMessage(theSlappingPlayer.playerID));
 				}
 			} else
 			{	//here theSlappingPlayer is actually the other player, 'cause the top card wasn't a jack
@@ -295,5 +299,27 @@ public class Board extends JPanel
 		g2d.fillArc(centerX-400, centerY-400, 800, 800, 0, 360);//upper left-hand corner, width, height, startArc, endArc
 		
 		Slapjack.executor.schedule(turnGlowOff, 1, TimeUnit.SECONDS);
+	}
+	
+	class WinMessage extends JPanel{
+		int playerID;
+		
+		WinMessage(int playerID){
+			this.playerID = playerID;
+			int width = (int) centerPanel.getMinimumSize().getWidth();
+			int height = (int) centerPanel.getMinimumSize().getHeight();
+			this.setBounds(0,0, width, height);
+			this.setOpaque(false);
+		}
+		@Override
+		public void paintComponent(Graphics g) {
+			String winMessage = "Player " + playerID + " wins!";
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setColor(Color.WHITE);
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2.setFont(new Font("Helvetica", Font.BOLD, 72));
+			g2.drawString(winMessage, this.getWidth()/2 - (g.getFontMetrics().stringWidth(winMessage)/2), this.getHeight()/3);
+		}
+	
 	}
 }
