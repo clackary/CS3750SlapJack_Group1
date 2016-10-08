@@ -79,6 +79,17 @@ public class Slapjack extends JFrame{
 		});
 		soundMenu.add(toggleSound);
 		
+		JMenu optionsMenu = createOptionsMenu();
+		
+		
+		menuBar.add(gameMenu);
+		menuBar.add(soundMenu);
+		menuBar.add(optionsMenu);
+		this.setJMenuBar(menuBar);
+	}
+
+
+	private JMenu createOptionsMenu() {
 		JMenu optionsMenu = new JMenu("Options");
 		JMenu setKeysMenu = new JMenu("Set Action Keys");
 		
@@ -133,12 +144,7 @@ public class Slapjack extends JFrame{
 		setKeysMenu.add(setKeysMenu_Player1);
 		setKeysMenu.add(setKeysMenu_Player2);
 		optionsMenu.add(setKeysMenu);
-		
-		
-		menuBar.add(gameMenu);
-		menuBar.add(soundMenu);
-		menuBar.add(optionsMenu);
-		this.setJMenuBar(menuBar);
+		return optionsMenu;
 	}
 	
 	class MenuActionListener implements ActionListener{
