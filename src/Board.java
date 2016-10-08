@@ -90,6 +90,13 @@ public class Board extends JPanel
 		//centerPanel.add(new WinMessage(1));for testing
 	}
 	
+	public void setActionKeys(int whichPlayer, String whichButton, String text){
+		if (whichPlayer == 1)
+			player1.changeActionKeys(whichButton, text);
+		else
+			player2.changeActionKeys(whichButton, text);
+	}
+	
 	private void dealCardsToPlayers() {
 		ArrayList<Card> dealtCards = new ArrayList<>();
 		if(soundOn){

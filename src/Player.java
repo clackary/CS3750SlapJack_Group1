@@ -31,12 +31,17 @@ public class Player extends JPanel
 	Card[] testBacks;
 	int playerID;
 	
+	String playTopActionKey;
+	String slapActionKey;
+	
 	int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	
 	public Player(Board board, int id){
 		theBoard = board;
 		playerID = id;
+		playTopActionKey = (playerID == 1 ? "A" : "K");//initializing the action keys
+		slapActionKey = (playerID == 1 ? "S" : "L");
 		hand = new ArrayList<Card>();
 		
 		this.setPreferredSize(new Dimension(screenWidth/3, screenHeight));
@@ -50,30 +55,7 @@ public class Player extends JPanel
 		createControlPanel();
 		createButtons();
 		
-		//Player 1 has A and S keys
-		//Player 2 has K and L keys
-		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-			.put(KeyStroke.getKeyStroke(playerID==1 ? 'a' : 'k'), "playTopCard");
-		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		.put(KeyStroke.getKeyStroke(playerID==1 ? 'A' : 'K'), "playTopCard");//also capital letters
-		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
-		    public void actionPerformed(ActionEvent arg0) {
-		    	if (!hand.isEmpty()){
-		    		theBoard.placeCardOnCenterPile(playTopCard());
-		    		theBoard.togglePlayersTurn();
-		    	}
-		    }
-		});
-		
-		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(playerID == 1 ? 's' : 'l'), "slap");
-		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		.put(KeyStroke.getKeyStroke(playerID == 1 ? 'S' : 'L'), "slap");//also capital letters
-		btn_slap.getActionMap().put("slap", new AbstractAction() {
-			public void actionPerformed(ActionEvent arg0) {
-				theBoard.slap(playerID);
-			}
-		});
+		setActionKeys();
         
 				
 		btn_playTopCard.addActionListener(new ActionListener() {
@@ -98,6 +80,43 @@ public class Player extends JPanel
 
 		this.add(handPanel);
 		this.add(controlPanel);
+	}
+
+	private void setActionKeys() {
+		//Player 1 has A and S keys
+		//Player 2 has K and L keys
+		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		.put(KeyStroke.getKeyStroke(playTopActionKey), "playTopCard");
+		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		.put(KeyStroke.getKeyStroke(playTopActionKey.toLowerCase()), "playTopCard");
+		
+	/*	btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+			.put(KeyStroke.getKeyStroke(playerID==1 ? 'a' : 'k'), "playTopCard");
+		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		.put(KeyStroke.getKeyStroke(playerID==1 ? 'A' : 'K'), "playTopCard");//also capital letters
+*/		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
+		    public void actionPerformed(ActionEvent arg0) {
+		    	if (!hand.isEmpty()){
+		    		theBoard.placeCardOnCenterPile(playTopCard());
+		    		theBoard.togglePlayersTurn();
+		    	}
+		    }
+		});
+
+		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(slapActionKey),
+				"slap");
+		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(slapActionKey.toLowerCase()),
+				"slap");// also capital letters
+		
+		/*btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(playerID == 1 ? 's' : 'l'), "slap");
+		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		.put(KeyStroke.getKeyStroke(playerID == 1 ? 'S' : 'L'), "slap");//also capital letters
+*/		btn_slap.getActionMap().put("slap", new AbstractAction() {
+			public void actionPerformed(ActionEvent arg0) {
+				theBoard.slap(playerID);
+			}
+		});
 	}
 
 	private void createButtons() {
@@ -137,6 +156,21 @@ public class Player extends JPanel
 			    	  btn.setBackground(btnColor_regular);
 			  }
 		});
+	}
+	
+	public void changeActionKeys(String whichButton, String text){
+		switch (whichButton){
+		case "playTop":
+			playTopActionKey = text;
+			btn_playTopCard.setText("Play Top Card" + "      [" + playTopActionKey + "]");
+			setActionKeys();
+			break;
+		case "slap":
+			slapActionKey = text;
+			btn_slap.setText("Slap      [" + slapActionKey + "]");
+			setActionKeys();
+			break;
+		}
 	}
 	
 	
