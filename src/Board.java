@@ -141,7 +141,7 @@ public class Board extends JPanel
 					theOtherPlayer = player1;
 				}
 				if (theOtherPlayer.handSize() == 0){
-					centerPanel.add(new WinMessage(theSlappingPlayer.playerID));
+					this.add(new WinMessage(theSlappingPlayer.playerID));
 				}
 			} else
 			{	//here theSlappingPlayer is actually the other player, 'cause the top card wasn't a jack
@@ -306,8 +306,8 @@ public class Board extends JPanel
 		
 		WinMessage(int playerID){
 			this.playerID = playerID;
-			int width = (int) centerPanel.getMinimumSize().getWidth();
-			int height = (int) centerPanel.getMinimumSize().getHeight();
+			int width = (int) thisBoard.getMinimumSize().getWidth();
+			int height = (int) thisBoard.getMinimumSize().getHeight();
 			this.setBounds(0,0, width, height);
 			this.setOpaque(false);
 		}
