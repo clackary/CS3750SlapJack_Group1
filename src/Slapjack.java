@@ -62,7 +62,7 @@ public class Slapjack extends JFrame{
 		gameMenu.add(newGame);
 		gameMenu.add(exit);
 		JMenu soundMenu = new JMenu("Sound");
-		JMenuItem toggleSound = new JMenuItem("Turn Off");
+		final JMenuItem toggleSound = new JMenuItem("Turn Off");
 		toggleSound.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
