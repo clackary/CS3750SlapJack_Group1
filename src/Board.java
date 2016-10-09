@@ -129,7 +129,7 @@ public class Board extends JPanel
 	}
 	
 	// Board.slap(playerId) is called by the player who slapped.
-	public void slap(int playerID){
+	public void slappedByPlayer(int playerID){
 		if(soundOn){
 			this.slapSound();
 		}

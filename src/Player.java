@@ -69,7 +69,7 @@ public class Player extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				JButton btn = (JButton)e.getSource();
 				Player player = (Player)btn.getParent().getParent();
-				theBoard.slap(player.playerID);
+				theBoard.slappedByPlayer(player.playerID);
 			}
 		});
 		
@@ -114,7 +114,7 @@ public class Player extends JPanel
 		.put(KeyStroke.getKeyStroke(playerID == 1 ? 'S' : 'L'), "slap");//also capital letters
 */		btn_slap.getActionMap().put("slap", new AbstractAction() {
 			public void actionPerformed(ActionEvent arg0) {
-				theBoard.slap(playerID);
+				theBoard.slappedByPlayer(playerID);
 			}
 		});
 	}
