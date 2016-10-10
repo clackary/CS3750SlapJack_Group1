@@ -51,44 +51,43 @@ public class Slapjack extends JFrame{
 	private void createMenu(){
 		JMenuBar menuBar = new JMenuBar();
 		JMenu gameMenu = new JMenu("Game");
-		JMenuItem newGame = new JMenuItem("New Game");
+		JMenuItem newGame = new JMenuItem("New Game", 'N');
+		newGame.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
+		newGame.setToolTipText("Starts A New Game");
 		newGame.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newGame();
 			}
 		});
-		JMenuItem exit = new JMenuItem("Exit");
+		JMenuItem exit = new JMenuItem("Exit", 'E');
+		exit.setToolTipText("Exits The Game");
 		exit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				executor.shutdown();
 				System.exit(0);
 			}
 		});
 		gameMenu.add(newGame);
 		gameMenu.add(exit);
 		JMenu soundMenu = new JMenu("Sound");
-		final JMenuItem toggleSound = new JMenuItem("Turn Off");
+		JMenuItem toggleSound = new JMenuItem("Turn Off", 'O');
+		toggleSound.setAccelerator(KeyStroke.getKeyStroke("alt S"));
 		toggleSound.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(soundOn){
-					soundOn = false;
+				if(board.isSoundOn()){
+					board.setSound(false);
 					toggleSound.setText("Turn On");
-					//I haven't added any sound yet, but I am working on that now. This just makes it easy to implement.
 				}
 				else {
-					soundOn = true;
+					board.setSound(true);
 					toggleSound.setText("Turn Off");
 				}
 			}
 		});
-		soundMenu.add(toggleSound);
-		
 		JMenu optionsMenu = createOptionsMenu();
-		
-		
+		soundMenu.add(toggleSound);
 		menuBar.add(gameMenu);
 		menuBar.add(soundMenu);
 		menuBar.add(optionsMenu);
