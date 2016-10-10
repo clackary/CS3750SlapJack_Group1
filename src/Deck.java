@@ -13,7 +13,7 @@ public class Deck {
 	
 	//Constructor
 	public Deck(){
-		
+		this.initialize();
 	}
 	
 	//add cards to deck
@@ -73,6 +73,20 @@ public class Deck {
 	public Card getCard(int index)
 	{
 		return deck.get(index);
+	}
+	
+	/*  this will be called by Board, 
+	 *  to be passed to a player.	 * 
+	 */
+	public ArrayList<Card> getCards(int numCards){
+		ArrayList<Card> cardsToGet = new ArrayList<>();
+		for (int i=0; i<numCards; i++){
+			cardsToGet.add(deck.get(i));
+		}
+		for (Card c : cardsToGet){
+			deck.remove(c);
+		}
+		return cardsToGet;
 	}
 	
 	public void removeCard()

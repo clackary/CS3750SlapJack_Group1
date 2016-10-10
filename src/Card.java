@@ -133,5 +133,3 @@ public class Card extends JPanel{ //Variables
     public int getValue(){ return value; }
     }
 }
-
-     
