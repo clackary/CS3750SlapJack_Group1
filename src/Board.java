@@ -84,7 +84,7 @@ public class Board extends JPanel
 
 		player1.addHandToBoard();
 		player2.addHandToBoard();
-		player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
+		//player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
 		player2.setPlayButtonEnabled(false);
 		
 		//centerPanel.add(new WinMessage(1));for testing
@@ -173,16 +173,16 @@ public class Board extends JPanel
 		if (playerUp == 1){
 			if (player2.handSize()!=0){
 				playerUp = 2;
-				player1.showPlayersTurn(false);
-				player2.showPlayersTurn(true);
+				//player1.showPlayersTurn(false);
+				//player2.showPlayersTurn(true);
 				player1.setPlayButtonEnabled(false);
 				player2.setPlayButtonEnabled(true);
 			}
 		}else{
 			if (player1.handSize()!=0){
 				playerUp = 1;
-				player1.showPlayersTurn(true);
-				player2.showPlayersTurn(false);
+				//player1.showPlayersTurn(true);
+				//player2.showPlayersTurn(false);
 				player1.setPlayButtonEnabled(true);
 				player2.setPlayButtonEnabled(false);
 			}

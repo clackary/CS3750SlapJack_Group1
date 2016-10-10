@@ -2,6 +2,7 @@
 import java.awt.Graphics2D;
 import java.awt.geom.*;
 import java.awt.RadialGradientPaint;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -139,7 +140,8 @@ public class Player extends JPanel
 		button.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 24));
 		button.setBackground(btnColor_regular);
 		button.setForeground(Color.WHITE);
-		button.setBorder(new LineBorder(Color.WHITE, 2));
+	//	button.putClientProperty(JButton., btnColor_regular_hover);
+		//button.setBorder(new LineBorder(Color.WHITE, 2));//looks crappy with rounded buttons
 		button.addMouseListener(new MouseAdapter(){
 			public void mouseEntered(MouseEvent e) {
 			      JButton btn = (JButton)e.getSource();
@@ -176,14 +178,16 @@ public class Player extends JPanel
 	
 	/*  Changes playTopCard button color for the player
 	 *  whose turn it is
+	 *  
+	 *  COMMENTED IT OUT because it's not working well with Nimbus Look and Feel
 	 */
-	public void showPlayersTurn(boolean playerIsUp){
+	/*public void showPlayersTurn(boolean playerIsUp){
 		if (playerIsUp){
 			btn_playTopCard.setBackground(btnColor_playersTurn);
 		}else{
 			btn_playTopCard.setBackground(btnColor_regular);
 		}
-	}
+	}*/
 	
 	//called by Board to toggle who can use the button
 	public void setPlayButtonEnabled(boolean enabled){
