@@ -27,10 +27,15 @@ public class Slapjack extends JFrame{
 	private Board board;
 	private MenuActionListener mal = new MenuActionListener();
 	
+	private final URL iconURL = Slapjack.class.getResource("slapjack.png");
+	private final Image icon = new ImageIcon(iconURL).getImage();
+	
 	//using this to turn off the glow after Player collects center pile
 	public static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	
 	public Slapjack(){
+		this.setIconImage(icon);
+		this.setTitle("Slapjack - Group 1");
 		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		//takes up whole screen but leaves room at bottom
