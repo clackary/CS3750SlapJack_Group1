@@ -149,6 +149,7 @@ public class Board extends JPanel
 				}
 				if (theOtherPlayer.handSize() == 0){
 					this.add(new WinMessage(theSlappingPlayer.playerID));
+					theSlappingPlayer.btn_playTopCard.setEnabled(false);
 				}
 			} else
 			{	//here theSlappingPlayer is actually the other player, 'cause the top card wasn't a jack
@@ -170,6 +171,11 @@ public class Board extends JPanel
 
 	//toggles the visual indicators of whose turn it is
 	public void togglePlayersTurn(){
+		if (player1.handSize()==0 && player2.handSize()==0){
+			this.add(new LoseMessage());
+			centerPanel.removeAll();
+			centerPanel.repaint();
+		}
 		if (playerUp == 1){
 			if (player2.handSize()!=0){
 				playerUp = 2;
@@ -327,6 +333,29 @@ public class Board extends JPanel
 			g2.setFont(new Font("Helvetica", Font.BOLD, 72));
 			g2.drawString(winMessage, this.getWidth()/2 - (g.getFontMetrics().stringWidth(winMessage)/2), this.getHeight()/3);
 		}
+	}
 	
+	class LoseMessage extends JPanel{
+		
+		LoseMessage(){
+			int width = (int) thisBoard.getMinimumSize().getWidth();
+			int height = (int) thisBoard.getMinimumSize().getHeight();
+			this.setBounds(0,0, width, height);
+			this.setOpaque(false);
+		}
+		@Override
+		public void paintComponent(Graphics g) {
+			String loseMessage_1 = "You both";
+			String loseMessage_2 = "FAILED";
+			
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setColor(Color.WHITE);
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2.setFont(new Font("Helvetica", Font.BOLD, 72));
+			int wordsHeight = (int) g2.getFontMetrics().getStringBounds(loseMessage_1, g2).getHeight();
+			g2.drawString(loseMessage_1, this.getWidth()/2 - (g.getFontMetrics().stringWidth(loseMessage_1)/2), this.getHeight()/3);
+			g2.setColor(Color.RED);
+			g2.drawString(loseMessage_2, this.getWidth()/2 - (g.getFontMetrics().stringWidth(loseMessage_2)/2), (this.getHeight()/3)+wordsHeight);
+		}
 	}
 }
