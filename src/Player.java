@@ -163,15 +163,36 @@ public class Player extends JPanel
 	public void changeActionKeys(String whichButton, String text){
 		switch (whichButton){
 		case "playTop":
+			String previousKey_PT = btn_playTopCard.getText().substring(btn_playTopCard.getText().length()-2, btn_playTopCard.getText().length()-1);
+			System.out.println(previousKey_PT);
 			playTopActionKey = text;
-			btn_playTopCard.setText("Play Top Card" + "      [" + playTopActionKey + "]");
-			setActionKeys();
+			if (btn_slap.getText().contains("[" + playTopActionKey)){
+				JOptionPane.showMessageDialog(theBoard, "Don't set both Play Top and Slap to the same key.",
+						"Trouble", JOptionPane.WARNING_MESSAGE);
+			}else{
+				btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.remove(KeyStroke.getKeyStroke(previousKey_PT));//clear out old action key
+				btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.remove(KeyStroke.getKeyStroke(previousKey_PT.toLowerCase()));//clear out old action key lowercase
+				btn_playTopCard.setText("Play Top Card" + "      [" + playTopActionKey + "]");
+				setActionKeys();
+			}
 			break;
 		case "slap":
+			String previousKey_S = btn_slap.getText().substring(btn_slap.getText().length()-2, btn_slap.getText().length()-1);
 			slapActionKey = text;
-			btn_slap.setText("Slap      [" + slapActionKey + "]");
-			setActionKeys();
-			break;
+			if (btn_playTopCard.getText().contains("[" + slapActionKey)){
+				JOptionPane.showMessageDialog(theBoard, "Don't set both Play Top and Slap to the same key.",
+						"Trouble", JOptionPane.WARNING_MESSAGE);
+			}else{
+				btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.remove(KeyStroke.getKeyStroke(previousKey_S));//clear out old action key
+				btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.remove(KeyStroke.getKeyStroke(previousKey_S.toLowerCase()));//clear out old action key lowercase
+				btn_slap.setText("Slap      [" + slapActionKey + "]");
+				setActionKeys();
+				break;
+			}
 		}
 	}
 	

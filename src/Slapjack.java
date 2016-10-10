@@ -108,15 +108,18 @@ public class Slapjack extends JFrame{
 		JMenu setKeysMenu_Player2 = new JMenu("Player 2");
 		
 		
+		String [] keyChoices_p1 = {"1", "2","3","4","Q","W","E","R","A","S","D","F","Z","X"};
+		String [] keyChoices_p2 = {"7", "8","9","0","U","I","O","P","H","J","K","L","N","M"};
 		
-		String [] keyChoices_playTop_p1 = {"1", "2","Q","W","A","S","Z"};
+		
+		String [] keyChoices_playTop_p1 = {"1", "2","Q","W","A","S","Z","E"};
 		String [] keyChoices_slap_p1 = {"3","4","E","R","D","F","X"};
 		String [] keyChoices_playTop_p2 = {"7","8","U","I","H","J","N"};
 		String [] keyChoices_slap_p2 = {"9","0","O","P","K","L","M"};
 		
 		JMenu playTop_p1 = new JMenu("Play Top Card");
 		ArrayList<JMenuItem> playTopMenuItems_p1 = new ArrayList<>();
-		for (String choice : keyChoices_playTop_p1){
+		for (String choice : keyChoices_p1){
 			playTopMenuItems_p1.add(new JMenuItem(choice));
 			playTopMenuItems_p1.get(playTopMenuItems_p1.size()-1).setName("ptp1");
 			playTopMenuItems_p1.get(playTopMenuItems_p1.size()-1).addActionListener(mal);
@@ -125,7 +128,7 @@ public class Slapjack extends JFrame{
 		
 		JMenu slap_p1 = new JMenu("Slap");
 		ArrayList<JMenuItem> slapMenuItems_p1 = new ArrayList<>();
-		for (String choice : keyChoices_slap_p1){
+		for (String choice : keyChoices_p1){
 			slapMenuItems_p1.add(new JMenuItem(choice));
 			slapMenuItems_p1.get(slapMenuItems_p1.size()-1).setName("slp1");
 			slapMenuItems_p1.get(slapMenuItems_p1.size()-1).addActionListener(mal);
@@ -134,7 +137,7 @@ public class Slapjack extends JFrame{
 		
 		JMenu playTop_p2 = new JMenu("Play Top Card");
 		ArrayList<JMenuItem> playTopMenuItems_p2 = new ArrayList<>();
-		for (String choice : keyChoices_playTop_p2){
+		for (String choice : keyChoices_p2){
 			playTopMenuItems_p2.add(new JMenuItem(choice));
 			playTopMenuItems_p2.get(playTopMenuItems_p2.size()-1).setName("ptp2");
 			playTopMenuItems_p2.get(playTopMenuItems_p2.size()-1).addActionListener(mal);
@@ -143,7 +146,7 @@ public class Slapjack extends JFrame{
 		
 		JMenu slap_p2 = new JMenu("Slap");
 		ArrayList<JMenuItem> slapMenuItems_p2 = new ArrayList<>();
-		for (String choice : keyChoices_slap_p2){
+		for (String choice : keyChoices_p2){
 			slapMenuItems_p2.add(new JMenuItem(choice));
 			slapMenuItems_p2.get(slapMenuItems_p2.size()-1).setName("slp2");
 			slapMenuItems_p2.get(slapMenuItems_p2.size()-1).addActionListener(mal);
