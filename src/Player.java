@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 import sun.misc.Queue;
@@ -29,7 +30,25 @@ public class Player extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		btn_playTopCard = new JButton("Play Top Card");
+		btn_playTopCard.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e){
+				System.out.println(hand.get(0));
+			}
+		});
 		btn_slap = new JButton("Slap");
+		btn_slap.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e){
+				if(board.isTopCardJack()){
+					//If the top card is a jack, player gets the pile
+					board.getPile(playerID);
+				}
+				else{
+					//If the top card is NOT a jack, the pile is divided among
+					//the other players
+					board.getPileForOthers(playerID);
+				}
+			}
+		});
 				
 		createHandPanel();		
 		createControlPanel();
@@ -53,6 +72,8 @@ public class Player extends JPanel
 		
 		this.add(handPanel);
 		this.add(controlPanel);
+		
+		
 	}
 
 	
@@ -60,6 +81,10 @@ public class Player extends JPanel
 		for (Card c : cardsToAdd){
 			hand.add(c);
 		}
+	}
+	
+	public void addCardToHand(Card cardToAdd){
+		hand.add(cardToAdd);
 	}
 	
 	
@@ -81,4 +106,9 @@ public class Player extends JPanel
 		handPanel.setMinimumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
 		handPanel.setMaximumSize(new Dimension((int)(theBoard.getWidth()*.33), (int)(theBoard.getHeight() * .7)));
 	}
+	
+	
+	
+	
+	
 }

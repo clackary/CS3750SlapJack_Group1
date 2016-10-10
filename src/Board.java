@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-
+import java.util.Collections;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +20,7 @@ public class Board extends JFrame
 	
 	public Board(){
 		deck = new Deck();
+		deck.initialize();
 		centerPile = new ArrayList<>();
 		
 		createBoard();
@@ -36,6 +37,7 @@ public class Board extends JFrame
 
 		
 		createPlayers();
+		
 		
 		centerPanel = new JPanel();
 		centerPanel.setOpaque(false);
@@ -63,14 +65,19 @@ public class Board extends JFrame
 		centerPanel.add(testCard1);
 		centerPanel.add(testCard3);
 		
+		deal(2);
+		
 		this.pack();  //this SEEMS necessary again here, otherwise everything renders 
 						//some times and not other times.
 	
 	}
 	
 	
-
+	//May need to adjust based on how we index the center pile
 	public boolean isTopCardJack(){
+		if(centerPile.get(0).getValueName() == "Jack"){
+			return true;
+		}
 		return false;
 	}
 	
@@ -92,5 +99,50 @@ public class Board extends JFrame
     public static void main (String[] args)
     {
     	new Board();
+    }
+    
+    public void deal(int numPlayers){
+    	//System.out.println("Dealing");
+    	deck.shuffle();
+    	for(int i = 0; i < deck.deckSize(); i++){
+    		if(i%numPlayers == 0){
+    			player1.addCardToHand(deck.getCard(i));
+    		}
+    		else if(i%numPlayers == 1){
+    			player2.addCardToHand(deck.getCard(i));
+    		}
+    	}
+    	
+    }
+    
+    private void shufflePile(){
+    	Collections.shuffle(centerPile);
+    }
+    
+    //When a player slaps the pile and a jack is on top
+    public void getPile(int playerID){
+    	shufflePile();
+    	if(playerID == 1){
+    		player1.addCardsToHand(centerPile);
+    		//System.out.println("Player 1 gets the pile");
+    	}
+    	else if(playerID == 2){
+    		player2.addCardsToHand(centerPile);
+    		//System.out.println("Player 2 gets the pile");
+    	}
+    	centerPile.clear();
+    }
+    //When a player slaps the pile and a jack is NOT on top
+    public void getPileForOthers(int playerID){
+    	shufflePile();
+    	if(playerID == 1){
+    		player2.addCardsToHand(centerPile);
+    		//System.out.println("Player 2 gets the pile");
+    	}
+    	else if(playerID == 2){
+    		player1.addCardsToHand(centerPile);
+    		//System.out.println("Player 1 gets the pile");
+    	}
+    	centerPile.clear();
     }
 }
