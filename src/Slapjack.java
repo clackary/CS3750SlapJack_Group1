@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+<<<<<<< HEAD
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -14,6 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
+=======
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+>>>>>>> origin/GUI
 
 public class Slapjack extends JFrame{
 	
