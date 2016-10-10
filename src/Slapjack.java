@@ -187,6 +187,17 @@ public class Slapjack extends JFrame{
 	}
 	
 	public static void main(String[] args){
+		try{
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //The System UI
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) { //Nimbus UI
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		}catch(Exception e){
+			e.printStackTrace(); //this should really never happen
+		}
 		new Slapjack();
 	}
 }
