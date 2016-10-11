@@ -140,7 +140,7 @@ public class Player extends JPanel
 		button.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 24));
 		button.setBackground(btnColor_regular);
 		button.setForeground(Color.WHITE);
-	//	button.putClientProperty(JButton., btnColor_regular_hover);
+		
 		//button.setBorder(new LineBorder(Color.WHITE, 2));//looks crappy with rounded buttons
 		button.addMouseListener(new MouseAdapter(){
 			public void mouseEntered(MouseEvent e) {
@@ -158,6 +158,7 @@ public class Player extends JPanel
 			    	  btn.setBackground(btnColor_regular);
 			  }
 		});
+		button.putClientProperty("Button.disabled", btnColor_regular_hover);		
 	}
 	
 	public void changeActionKeys(String whichButton, String text){
@@ -212,6 +213,10 @@ public class Player extends JPanel
 	//called by Board to toggle who can use the button
 	public void setPlayButtonEnabled(boolean enabled){
 		btn_playTopCard.setEnabled(enabled);
+		if (!btn_playTopCard.isEnabled())
+			btn_playTopCard.setForeground(Color.GRAY);
+		else
+			btn_playTopCard.setForeground(Color.WHITE);
 	}
 	
 	public void addHandToBoard(){
