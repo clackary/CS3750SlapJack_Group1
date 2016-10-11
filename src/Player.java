@@ -164,7 +164,6 @@ public class Player extends JPanel
 		switch (whichButton){
 		case "playTop":
 			String previousKey_PT = btn_playTopCard.getText().substring(btn_playTopCard.getText().length()-2, btn_playTopCard.getText().length()-1);
-			System.out.println(previousKey_PT);
 			playTopActionKey = text;
 			if (btn_slap.getText().contains("[" + playTopActionKey)){
 				JOptionPane.showMessageDialog(theBoard, "Don't set both Play Top and Slap to the same key.",
