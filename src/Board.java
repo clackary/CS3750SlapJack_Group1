@@ -4,12 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -17,9 +12,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BoxLayout;
 import java.util.concurrent.*;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 import java.util.Random;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
@@ -84,18 +77,18 @@ public class Board extends JPanel
 
 		player1.addHandToBoard();
 		player2.addHandToBoard();
-		//player1.showPlayersTurn(true);//Player1's PlayTopCard button shows green
-		player2.setPlayButtonEnabled(false);
 		
-		//centerPanel.add(new WinMessage(1));for testing
+		player2.setPlayButtonEnabled(false);
 	}
-	
+
+	//called by ActionListeners in Options menu
 	public void setActionKeys(int whichPlayer, String whichButton, String text){
 		if (whichPlayer == 1)
 			player1.changeActionKeys(whichButton, text);
 		else
 			player2.changeActionKeys(whichButton, text);
 	}
+	
 	
 	private void dealCardsToPlayers() {
 		ArrayList<Card> dealtCards = new ArrayList<>();
@@ -128,7 +121,9 @@ public class Board extends JPanel
 		centerPanel.repaint();
 	}
 	
-	// Board.slappedByPlayer(playerId) is called by the player who slapped.
+	/* Board.slappedByPlayer(playerId) is called by the player who slapped.
+	   Formerly named slap(), but the name seemed weird because the Board
+	   doesn't do a slap() action.  The Player slaps, and the Board GETS slapped.*/
 	public void slappedByPlayer(int playerID){
 		if(soundOn){
 			this.slapSound();
@@ -136,7 +131,7 @@ public class Board extends JPanel
 		Player theSlappingPlayer;
 		Player theOtherPlayer;  
 				
-		if (!centerPile.isEmpty())//nothing happens if the center pile is empty
+		if (!centerPile.isEmpty())//nothing happens if the center pile is empty (slapped too late!)
 		{
 			if (isTopCardJack())
 			{
@@ -147,12 +142,13 @@ public class Board extends JPanel
 					theSlappingPlayer = player2;
 					theOtherPlayer = player1;
 				}
-				if (theOtherPlayer.handSize() == 0){
+/* WIN !!!  */	if (theOtherPlayer.handSize() == 0){  		/* WIN !!!  */     /* WIN !!!  */
 					this.add(new WinMessage(theSlappingPlayer.playerID));
 					theSlappingPlayer.btn_playTopCard.setEnabled(false);
 				}
 			} else
 			{	//here theSlappingPlayer is actually the other player, 'cause the top card wasn't a jack
+				//that way the centerPile can be given to the correct player
 				theSlappingPlayer = (playerID == 1 ? player2 : player1);
 			}
 			Collections.shuffle(centerPile);
@@ -160,7 +156,7 @@ public class Board extends JPanel
 				this.shuffleSound();
 			}
 			theSlappingPlayer.addCardsToHand(centerPile);
-			playerCollecting = theSlappingPlayer.playerID;
+			playerCollecting = theSlappingPlayer.playerID;//used in drawGlow() to identify the glowing player
 			turnGlowOn = true;
 			this.repaint();//calls the glow method
 			centerPile.clear();
@@ -172,14 +168,14 @@ public class Board extends JPanel
 	//toggles the visual indicators of whose turn it is
 	public void togglePlayersTurn(){
 		if (player1.handSize()==0 && player2.handSize()==0){
-			this.add(new LoseMessage());
-			centerPanel.removeAll();
-			centerPanel.repaint();
+			this.add(new LoseMessage());   /* LOSE  !!!  */   /* LOSE  !!!  */   /* LOSE  !!!  */  /* LOSE  !!!  */
+			centerPanel.removeAll();  //removeAll() and repaint() so the center pile
+			centerPanel.repaint();    //doesn't obscure the lose message.
 		}
 		if (playerUp == 1){
 			if (player2.handSize()!=0){
 				playerUp = 2;
-				//player1.showPlayersTurn(false);
+				//player1.showPlayersTurn(false);   //didn't play well with Nimbus
 				//player2.showPlayersTurn(true);
 				player1.setPlayButtonEnabled(false);
 				player2.setPlayButtonEnabled(true);
@@ -187,7 +183,7 @@ public class Board extends JPanel
 		}else{
 			if (player1.handSize()!=0){
 				playerUp = 1;
-				//player1.showPlayersTurn(true);
+				//player1.showPlayersTurn(true);    //didn't play well with Nimbus
 				//player2.showPlayersTurn(false);
 				player1.setPlayButtonEnabled(true);
 				player2.setPlayButtonEnabled(false);
@@ -285,9 +281,8 @@ public class Board extends JPanel
 
 	
 	
-	/*  playing with maybe using a less subtle version of this to indicate which player just
-	 *  won the cards. 
-	 * 
+	/*  a gentle glow behind the cards of the Player who
+	 *  just collected the center pile
 	 */
 	private void drawGlow(Graphics g, int playerID) {
 		int centerX, centerY;

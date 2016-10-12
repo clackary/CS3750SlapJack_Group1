@@ -39,6 +39,7 @@ public class Slapjack extends JFrame{
 	
 	//using this to turn off the glow after Player collects center pile
 	public static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	
 	private static Font rulesFont = new Font("Verdana", Font.PLAIN, 20);
 	private static Font actionKeysFont = new Font("Verdana", Font.PLAIN, 16);
 	
@@ -51,14 +52,12 @@ public class Slapjack extends JFrame{
 		this.setSize(new Dimension(screenWidth, screenHeight - (screenHeight / 20))); 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//createKeyBindingsPanel();//put this before createMenu() so panel exists already
 		
-		this.repaint();
+//		this.repaint(); //not necessary?
 		board = new Board();
 		this.add(board);
 		createMenu();
 		this.pack();//this way the board JPanel shows up
-		
 	}
 	
 	
@@ -84,6 +83,7 @@ public class Slapjack extends JFrame{
 		});
 		gameMenu.add(newGame);
 		gameMenu.add(exit);
+		
 		JMenu soundMenu = new JMenu("Sound");
 		JMenuItem toggleSound = new JMenuItem("Turn Off", 'O');
 		toggleSound.setAccelerator(KeyStroke.getKeyStroke("alt S"));
@@ -100,10 +100,10 @@ public class Slapjack extends JFrame{
 				}
 			}
 		});
+		soundMenu.add(toggleSound);
+		
 		JMenu optionsMenu = createOptionsMenu();		
 		JMenu helpMenu = createHelpMenu();
-		
-		soundMenu.add(toggleSound);
 		
 		gameMenu.setMnemonic('g');
 		soundMenu.setMnemonic('s');
@@ -169,7 +169,6 @@ public class Slapjack extends JFrame{
 		JMenu setKeysMenu_Player2 = new JMenu("Player 2");
 		setKeysMenu_Player1.setMnemonic('1');
 		setKeysMenu_Player2.setMnemonic('2');
-		
 		
 		String [] keyChoices_p1 = {"1", "2","3","4","Q","W","E","R","A","S","D","F","Z","X"};
 		String [] keyChoices_p2 = {"7", "8","9","0","U","I","O","P","H","J","K","L","N","M"};
@@ -252,10 +251,7 @@ public class Slapjack extends JFrame{
 				board.setActionKeys(2, "slap", text);
 				break;
 			}
-			
-			
 		}
-		
 	}
 	
 	public boolean isSoundOn(){
@@ -269,7 +265,6 @@ public class Slapjack extends JFrame{
 	
 	public static void main(String[] args){
 		try{
-			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //The System UI
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) { //Nimbus UI
 		            UIManager.setLookAndFeel(info.getClassName());

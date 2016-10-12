@@ -1,23 +1,13 @@
 
-import java.awt.Graphics2D;
-import java.awt.geom.*;
-import java.awt.RadialGradientPaint;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import sun.misc.Queue;
 
 public class Player extends JPanel
 {
@@ -25,6 +15,7 @@ public class Player extends JPanel
 	static Color btnColor_playersTurn_hover = new Color(0,131,29);
 	static Color btnColor_regular = new Color(178,18,18);
 	static Color btnColor_regular_hover = new Color(208,18,18);
+
 	Board theBoard;
 	ArrayList<Card> hand;
 	JPanel handPanel, controlPanel;
@@ -57,7 +48,6 @@ public class Player extends JPanel
 		createButtons();
 		
 		setActionKeys();
-        
 				
 		btn_playTopCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -73,8 +63,6 @@ public class Player extends JPanel
 				theBoard.slappedByPlayer(player.playerID);
 			}
 		});
-		
-		
 			
 		controlPanel.add(btn_playTopCard);
 		controlPanel.add(btn_slap);
@@ -84,18 +72,15 @@ public class Player extends JPanel
 	}
 
 	private void setActionKeys() {
-		//Player 1 has A and S keys
-		//Player 2 has K and L keys
+		//Player 1 initialized with A and S keys
+		//Player 2 initialized with K and L keys
+		//Action Keys still work if CAPS LOCK is on.
 		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 		.put(KeyStroke.getKeyStroke(playTopActionKey), "playTopCard");
-		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW) 
 		.put(KeyStroke.getKeyStroke(playTopActionKey.toLowerCase()), "playTopCard");
 		
-	/*	btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-			.put(KeyStroke.getKeyStroke(playerID==1 ? 'a' : 'k'), "playTopCard");
-		btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		.put(KeyStroke.getKeyStroke(playerID==1 ? 'A' : 'K'), "playTopCard");//also capital letters
-*/		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
+		btn_playTopCard.getActionMap().put("playTopCard", new AbstractAction () {
 		    public void actionPerformed(ActionEvent arg0) {
 		    	if (!hand.isEmpty()){
 		    		theBoard.placeCardOnCenterPile(playTopCard());
@@ -109,11 +94,7 @@ public class Player extends JPanel
 		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(slapActionKey.toLowerCase()),
 				"slap");// also capital letters
 		
-		/*btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(playerID == 1 ? 's' : 'l'), "slap");
-		btn_slap.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		.put(KeyStroke.getKeyStroke(playerID == 1 ? 'S' : 'L'), "slap");//also capital letters
-*/		btn_slap.getActionMap().put("slap", new AbstractAction() {
+		btn_slap.getActionMap().put("slap", new AbstractAction() {
 			public void actionPerformed(ActionEvent arg0) {
 				theBoard.slappedByPlayer(playerID);
 			}
@@ -131,8 +112,8 @@ public class Player extends JPanel
 		configureButtons(btn_slap);
 	}
 
-	/*  a method to do 1000 things to buttons but not
-	 *  have to repeat the same code twice.
+	/*  a method to do seven things to buttons but not
+	 *  have to repeat the same code seven times.
 	 */
 	private void configureButtons(JButton button) {
 		button.setFocusPainted(false);
@@ -158,13 +139,15 @@ public class Player extends JPanel
 			    	  btn.setBackground(btnColor_regular);
 			  }
 		});
-		button.putClientProperty("Button.disabled", btnColor_regular_hover);		
+		button.putClientProperty("Button.disabled", btnColor_regular_hover);		//doesn't work?
 	}
 	
 	public void changeActionKeys(String whichButton, String text){
 		switch (whichButton){
 		case "playTop":
+			//Action Key char is buried in spaces and square brackets...
 			String previousKey_PT = btn_playTopCard.getText().substring(btn_playTopCard.getText().length()-2, btn_playTopCard.getText().length()-1);
+			
 			playTopActionKey = text;
 			if (btn_slap.getText().contains("[" + playTopActionKey)){
 				JOptionPane.showMessageDialog(theBoard, "Don't set both Play Top and Slap to the same key.",
@@ -175,7 +158,7 @@ public class Player extends JPanel
 				btn_playTopCard.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.remove(KeyStroke.getKeyStroke(previousKey_PT.toLowerCase()));//clear out old action key lowercase
 				btn_playTopCard.setText("Play Top Card" + "      [" + playTopActionKey + "]");
-				setActionKeys();
+				setActionKeys();//change button text to show new action key
 			}
 			break;
 		case "slap":
@@ -252,25 +235,7 @@ public class Player extends JPanel
         this.hand = hand;
     }
 	
-    
-    //When a Jack occurs slap will be called by player and the pile
-    // from the center will be given to the player who slapped first.
-    public void slap(ArrayList<Card> pile)
-    {
-        if (pile.isEmpty()) {
-            System.out.println("Too late! Pile is empty");
-        }
-        
-        if (pile.get(0).getValueName().equals(Card.Value.JACK)) {
-            //Jack is top card of pile, jack was slapped
-            //Player gets pile, add pile to player's hand
-            
-        } else {
-            //Jack was not slapped, add pile to opponent's hand.
-        }
-        
-        return;
-    }
+  
     
     //Removes the top card from the hand of player.
     //and returns it to be placed in the center pile
